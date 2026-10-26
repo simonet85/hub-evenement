@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+    color-scheme: light;
+
+    --surface-100: #fbf6ee;
+    --surface-200: #f3ebdd;
+    --surface-300: #e8dcc8;
+    --ink: #2a1f17;
+    --ink-muted: #66554a;
+    --line-strong: #8a7560;
+    --line: #d9c9b0;
+    --gold: #7a5c1c;
+    --accent-mariage: #4e6b48;
+    --accent-bapteme: #42698f;
+    --accent-anniversaire: #a0432a;
+    --accent-fete: #7a3d6f;
+    --on-accent: #fffaf2;
+    --success: #2c6a4a;
+    --warning: #8a5a00;
+    --danger: #a3362a;
+
+    --accent: var(--accent-mariage);
+    --tap: 44px;
+
+    --font-display-stack: 'Cormorant Garamond', 'Cormorant', Georgia, serif;
+    --font-sans-stack: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-script-stack: 'Pinyon Script', 'Snell Roundhand', cursive;
+}
+
+[data-theme='dark'] {
+    color-scheme: dark;
+
+    --surface-100: #1d1711;
+    --surface-200: #272019;
+    --surface-300: #332a21;
+    --ink: #f4ece0;
+    --ink-muted: #c4b5a3;
+    --line-strong: #8c7a68;
+    --line: #3f352a;
+    --gold: #d9b36a;
+    --accent-mariage: #a4c19c;
+    --accent-bapteme: #9bbfe2;
+    --accent-anniversaire: #e59a80;
+    --accent-fete: #d3a3c8;
+    --on-accent: #1d1711;
+    --success: #8fcfad;
+    --warning: #e6b655;
+    --danger: #f0a094;
+}
+
+.ev-mariage {
+    --accent: var(--accent-mariage);
+}
+
+.ev-bapteme {
+    --accent: var(--accent-bapteme);
+}
+
+.ev-anniversaire {
+    --accent: var(--accent-anniversaire);
+}
+
+.ev-fete {
+    --accent: var(--accent-fete);
+}
+
+@theme inline {
+    --color-surface-100: var(--surface-100);
+    --color-surface-200: var(--surface-200);
+    --color-surface-300: var(--surface-300);
+    --color-ink: var(--ink);
+    --color-ink-muted: var(--ink-muted);
+    --color-line-strong: var(--line-strong);
+    --color-line: var(--line);
+    --color-gold: var(--gold);
+    --color-accent: var(--accent);
+    --color-accent-mariage: var(--accent-mariage);
+    --color-accent-bapteme: var(--accent-bapteme);
+    --color-accent-anniversaire: var(--accent-anniversaire);
+    --color-accent-fete: var(--accent-fete);
+    --color-on-accent: var(--on-accent);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-danger: var(--danger);
+
+    --font-sans: var(--font-sans-stack);
+    --font-display: var(--font-display-stack);
+    --font-script: var(--font-script-stack);
+
+    --text-display-xl: 64px;
+    --text-display-xl--line-height: 60px;
+    --text-display-xl--font-weight: 500;
+    --text-display-xl--letter-spacing: -0.5px;
+
+    --text-display-lg: 44px;
+    --text-display-lg--line-height: 46px;
+    --text-display-lg--font-weight: 500;
+
+    --text-heading: 30px;
+    --text-heading--line-height: 34px;
+    --text-heading--font-weight: 600;
+
+    --text-body-lg: 18px;
+    --text-body-lg--line-height: 28px;
+    --text-body-lg--font-weight: 400;
+
+    --text-body: 16px;
+    --text-body--line-height: 24px;
+    --text-body--font-weight: 400;
+
+    --text-label: 14px;
+    --text-label--line-height: 20px;
+    --text-label--font-weight: 600;
+
+    --text-caption: 13px;
+    --text-caption--line-height: 18px;
+    --text-caption--font-weight: 400;
+
+    --text-eyebrow: 12px;
+    --text-eyebrow--line-height: 16px;
+    --text-eyebrow--font-weight: 600;
+    --text-eyebrow--letter-spacing: 2px;
+
+    --text-script: 48px;
+    --text-script--line-height: 52px;
+    --text-script--font-weight: 400;
+
+    --radius-sm: 2px;
+    --radius-md: 6px;
+    --radius-pill: 999px;
+
+    --shadow-card: 0 1px 2px rgba(42, 31, 23, 0.1), 0 8px 24px rgba(42, 31, 23, 0.08);
+}
+
+@layer base {
+    body {
+        background-color: var(--surface-100);
+        color: var(--ink);
+        font-family: var(--font-sans-stack);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-display-stack);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--line-strong);
+        outline-offset: 2px;
+    }
+
+    ::selection {
+        background-color: var(--accent);
+        color: var(--on-accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        ::before,
+        ::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@layer components {
+    .btn {
+        display: inline-flex;
+        min-height: var(--tap);
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 2px;
+        padding: 0 20px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        text-decoration: none;
+        transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+        cursor: pointer;
+    }
+
+    .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .btn-primary {
+        background-color: var(--accent);
+        color: var(--on-accent);
+        border: 1px solid transparent;
+    }
+
+    .btn-primary:hover {
+        filter: brightness(0.95);
+    }
+
+    .btn-secondary {
+        background-color: transparent;
+        color: var(--ink);
+        border: 1px solid var(--line-strong);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--surface-200);
+    }
+
+    .card {
+        background-color: var(--surface-200);
+        border: 1px solid var(--line);
+        border-radius: 2px;
+    }
+
+    .card-invitation {
+        box-shadow: var(--shadow-card);
+    }
+
+    .field {
+        width: 100%;
+        min-height: var(--tap);
+        border: 1px solid var(--line-strong);
+        border-radius: 2px;
+        background-color: var(--surface-300);
+        color: var(--ink);
+        padding: 10px 12px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .field::placeholder {
+        color: var(--ink-muted);
+    }
+
+    .field-error {
+        border-color: var(--danger);
+    }
+
+    .label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .help {
+        font-size: 13px;
+        line-height: 18px;
+        color: var(--ink-muted);
+    }
+
+    .error-text {
+        font-size: 13px;
+        line-height: 18px;
+        color: var(--danger);
+    }
+
+    .eyebrow {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 16px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background-color: var(--surface-200);
+        padding: 2px 10px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 18px;
+    }
+}
