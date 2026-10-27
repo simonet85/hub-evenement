@@ -1,0 +1,283 @@
+@extends('layouts.app')
+
+@section('title', $event->name.' — Hub Événement')
+
+@push('head')
+    <meta name="robots" content="noindex, nofollow">
+@endpush
+
+@section('content')
+    <div class="mx-auto max-w-5xl px-4 py-10 {{ $event->type->accentClass() }}">
+        <nav aria-label="Fil d'Ariane" class="text-caption text-ink-muted">
+            <a href="{{ route('dashboard') }}" class="hover:text-ink">Mon espace</a>
+            <span aria-hidden="true"> / </span>
+            <span aria-current="page">{{ $event->name }}</span>
+        </nav>
+
+        <header class="mt-6 flex flex-wrap items-start justify-between gap-4">
+            <div>
+                <p class="eyebrow">{{ $event->type->label() }}</p>
+                <h1 class="mt-1 font-display text-display-lg text-ink">{{ $event->name }}</h1>
+                <p class="mt-3 text-body-lg text-ink-muted">
+                    {{ $event->starts_at->translatedFormat('l j F Y') }} à {{ $event->starts_at->format('H\hi') }}
+                </p>
+                <p class="text-body text-ink-muted">
+                    {{ $event->venue_name }}@if ($event->venue_address) — {{ $event->venue_address }}@endif
+                </p>
+                @if ($event->rsvp_deadline)
+                    <p class="mt-1 text-caption text-ink-muted">
+                        Réponses attendues avant le {{ $event->rsvp_deadline->translatedFormat('j F Y') }}
+                    </p>
+                @endif
+                @cannot('update', $event)
+                    <p class="status-pill mt-3">Co-organisateur</p>
+                @endcannot
+            </div>
+
+            @can('update', $event)
+                <a href="{{ route('events.edit', $event) }}" class="btn btn-secondary">
+                    Modifier l'événement
+                </a>
+            @endcan
+        </header>
+
+        <section aria-label="Chiffres clés" class="mt-8 grid max-w-md grid-cols-2 gap-4">
+            <div class="card p-4">
+                <p class="eyebrow">Foyers</p>
+                <p class="mt-1 font-display text-heading text-accent">{{ $event->guests->count() }}</p>
+            </div>
+            <div class="card p-4">
+                <p class="eyebrow">Places prévues</p>
+                <p class="mt-1 font-display text-heading text-accent">{{ $event->guests->sum('allowed_seats') }}</p>
+            </div>
+        </section>
+
+        <div class="mt-10 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+            <section aria-labelledby="foyers-title" class="card p-6">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h2 id="foyers-title" class="font-display text-heading text-ink">Foyers</h2>
+                    <span class="status-pill">
+                        {{ $event->guests->count() }} foyer{{ $event->guests->count() > 1 ? 's' : '' }}
+                    </span>
+                </div>
+
+                @if ($event->guests->isEmpty())
+                    <p class="mt-3 text-body text-ink-muted">
+                        Aucun foyer pour l'instant. Ajoutez-en un ou importez votre liste CSV.
+                    </p>
+                @else
+                    <ul role="list" class="mt-4 divide-y divide-line">
+                        @foreach ($event->guests as $guest)
+                            <li class="flex flex-wrap items-start justify-between gap-3 py-3">
+                                <div>
+                                    <p class="text-label text-ink">{{ $guest->name }}</p>
+                                    <p class="text-caption text-ink-muted">
+                                        {{ collect([$guest->email, $guest->phone])->filter()->implode(' · ') ?: 'Sans contact' }}
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="status-pill">
+                                        {{ $guest->allowed_seats }} place{{ $guest->allowed_seats > 1 ? 's' : '' }}
+                                    </span>
+                                    <form method="POST" action="{{ route('guests.destroy', [$event, $guest]) }}" onsubmit="return confirm('Supprimer ce foyer ?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-caption font-semibold text-danger hover:underline">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </section>
+
+            <aside class="space-y-8">
+                <section aria-labelledby="ajout-title" class="card p-6">
+                    <h2 id="ajout-title" class="font-display text-heading text-ink">Ajouter un foyer</h2>
+
+                    <form method="POST" action="{{ route('guests.store', $event) }}" class="mt-4 space-y-4">
+                        @csrf
+
+                        <div>
+                            <label for="guest_name" class="label">Nom du foyer</label>
+                            <input
+                                id="guest_name"
+                                name="name"
+                                type="text"
+                                value="{{ old('name') }}"
+                                maxlength="160"
+                                required
+                                placeholder="Famille Koné"
+                                class="field mt-1 @error('name') field-error @enderror"
+                                @error('name') aria-invalid="true" aria-describedby="guest_name-error" @enderror
+                            >
+                            @error('name')
+                                <p id="guest_name-error" class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="guest_email" class="label">
+                                E-mail <span class="font-normal text-ink-muted">(facultatif)</span>
+                            </label>
+                            <input
+                                id="guest_email"
+                                name="email"
+                                type="email"
+                                value="{{ old('email') }}"
+                                maxlength="190"
+                                placeholder="foyer@example.com"
+                                class="field mt-1 @error('email') field-error @enderror"
+                                @error('email') aria-invalid="true" aria-describedby="guest_email-error" @enderror
+                            >
+                            @error('email')
+                                <p id="guest_email-error" class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="guest_phone" class="label">
+                                Téléphone <span class="font-normal text-ink-muted">(facultatif)</span>
+                            </label>
+                            <input
+                                id="guest_phone"
+                                name="phone"
+                                type="tel"
+                                value="{{ old('phone') }}"
+                                maxlength="30"
+                                placeholder="+225 07 00 00 00 00"
+                                class="field mt-1 @error('phone') field-error @enderror"
+                                @error('phone') aria-invalid="true" aria-describedby="guest_phone-error" @enderror
+                            >
+                            @error('phone')
+                                <p id="guest_phone-error" class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="allowed_seats" class="label">Places</label>
+                            <input
+                                id="allowed_seats"
+                                name="allowed_seats"
+                                type="number"
+                                value="{{ old('allowed_seats', 2) }}"
+                                min="1"
+                                max="20"
+                                required
+                                class="field mt-1 @error('allowed_seats') field-error @enderror"
+                                @error('allowed_seats') aria-invalid="true" aria-describedby="allowed_seats-error" @enderror
+                            >
+                            <p class="help mt-1">Entre 1 et 20 places par foyer.</p>
+                            @error('allowed_seats')
+                                <p id="allowed_seats-error" class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full">Ajouter le foyer</button>
+                    </form>
+                </section>
+
+                <section aria-labelledby="import-title" class="card p-6">
+                    <h2 id="import-title" class="font-display text-heading text-ink">Importer un CSV</h2>
+                    <p class="mt-2 text-caption text-ink-muted">
+                        Colonnes : nom, e-mail, téléphone, places. Séparateur virgule ou point-virgule,
+                        en-tête facultative. Lignes invalides ignorées et signalées.
+                    </p>
+
+                    <form method="POST" action="{{ route('guests.import', $event) }}" enctype="multipart/form-data" class="mt-4 space-y-3">
+                        @csrf
+
+                        <div>
+                            <label for="import_file" class="label">Fichier CSV (2 Mo max)</label>
+                            <input
+                                id="import_file"
+                                name="file"
+                                type="file"
+                                accept=".csv,.txt,text/csv,text/plain"
+                                required
+                                class="field mt-1 @error('file') field-error @enderror"
+                                @error('file') aria-invalid="true" aria-describedby="import_file-error" @enderror
+                            >
+                            @error('file')
+                                <p id="import_file-error" class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary w-full">Importer la liste</button>
+                    </form>
+
+                    @if (session('import_errors'))
+                        <div class="mt-4 rounded-sm border border-line bg-surface-300 p-3" role="alert">
+                            <p class="text-label text-warning">Lignes ignorées</p>
+                            <ul class="mt-1 space-y-1 text-caption text-ink-muted">
+                                @foreach (session('import_errors') as $line)
+                                    <li>{{ $line }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </section>
+
+                @can('update', $event)
+                    <section aria-labelledby="coorganisateurs-title" class="card p-6">
+                        <h2 id="coorganisateurs-title" class="font-display text-heading text-ink">Co-organisateurs</h2>
+                        <p class="mt-2 text-caption text-ink-muted">
+                            Ils consultent l'événement et gèrent les foyers, sans modifier les réglages.
+                            La personne doit déjà avoir un compte Hub Événement.
+                        </p>
+
+                        <ul role="list" class="mt-4 divide-y divide-line">
+                            <li class="flex flex-wrap items-center justify-between gap-2 py-2">
+                                <span class="text-body text-ink">{{ $event->owner->name }}</span>
+                                <span class="status-pill">Propriétaire</span>
+                            </li>
+                            @foreach ($event->roles as $role)
+                                <li class="flex flex-wrap items-center justify-between gap-2 py-2">
+                                    <div>
+                                        <p class="text-body text-ink">{{ $role->user->name }}</p>
+                                        <p class="text-caption text-ink-muted">{{ $role->user->email }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="status-pill">Co-organisateur</span>
+                                        <form method="POST" action="{{ route('co-organizers.destroy', [$event, $role->user]) }}" onsubmit="return confirm('Retirer ce co-organisateur ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-caption font-semibold text-danger hover:underline">
+                                                Retirer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <form method="POST" action="{{ route('co-organizers.store', $event) }}" class="mt-4 space-y-3">
+                            @csrf
+
+                            <div>
+                                <label for="co_email" class="label">Ajouter par e-mail</label>
+                                <input
+                                    id="co_email"
+                                    name="co_email"
+                                    type="email"
+                                    value="{{ old('co_email') }}"
+                                    required
+                                    placeholder="amis@example.com"
+                                    class="field mt-1 @error('co_email') field-error @enderror"
+                                    @error('co_email') aria-invalid="true" aria-describedby="co_email-error" @enderror
+                                >
+                                @error('co_email')
+                                    <p id="co_email-error" class="error-text mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <button type="submit" class="btn btn-secondary w-full">Ajouter le co-organisateur</button>
+                        </form>
+                    </section>
+                @endcan
+            </aside>
+        </div>
+    </div>
+@endsection

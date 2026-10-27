@@ -2,12 +2,15 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 1 — socle
+## État : Phase 2 — événements, foyers et invités
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
 - Authentification organisateur : inscription, connexion, déconnexion, mot de passe oublié et réinitialisation.
-- Tableau de bord vide, protégé par l'authentification.
+- Événements mariage, baptême, anniversaire ou fête, avec un accent visuel par type.
+- Foyers : ajout manuel avec 1 à 20 places, suppression et import CSV (virgule ou point-virgule, en-tête facultative) avec lignes invalides signalées.
+- Co-organisateurs invités par e-mail : ils consultent l'événement et gèrent les foyers ; le propriétaire garde les réglages et la gestion des co-organisateurs.
+- Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
 La constitution du projet (mission, stack, roadmap) est dans [`specs/`](specs/).
@@ -41,18 +44,21 @@ docker compose exec app ./vendor/bin/pest
 
 ```
 app/Http/Controllers/Auth/   inscription, connexion, réinitialisation
+app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs
 app/Models/                  modèles Eloquent
+app/Policies/                autorisations des événements
+app/Services/                import CSV des foyers
 design-system/tokens.json    source de vérité des jetons
 resources/css/app.css        variables CSS + thème Tailwind 4
-resources/views/             layout, accueil, authentification, tableau de bord
-specs/                       mission, tech-stack, roadmap
+resources/views/events/      création, édition et détail d'un événement
+specs/                       mission, tech-stack, roadmap, spécifications de phase
 .docker/php/Dockerfile       image PHP de développement
 compose.yaml                 app, MySQL, Mailpit, build des assets
 ```
 
 ## Prochaines étapes
 
-La Phase 2 couvre les événements, les foyers, les invités et l'import CSV. Voir [`specs/roadmap.md`](specs/roadmap.md).
+La Phase 3 couvre l'invitation personnalisée et le RSVP. Voir [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 

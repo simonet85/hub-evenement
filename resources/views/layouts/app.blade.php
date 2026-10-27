@@ -49,6 +49,17 @@
     </header>
 
     <main id="contenu" class="flex-1">
+        @if (session('status') || session('error'))
+            <div class="mx-auto max-w-5xl px-4 pt-6">
+                @if (session('status'))
+                    <p class="card p-4 text-caption text-success" role="status">{{ session('status') }}</p>
+                @endif
+                @if (session('error'))
+                    <p class="card p-4 text-caption text-danger" role="alert">{{ session('error') }}</p>
+                @endif
+            </div>
+        @endif
+
         @yield('content')
     </main>
 
