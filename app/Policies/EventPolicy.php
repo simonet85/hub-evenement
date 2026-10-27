@@ -32,6 +32,11 @@ class EventPolicy
         return $event->hasMember($user);
     }
 
+    public function moderateGuestbook(User $user, Event $event): bool
+    {
+        return $event->hasMember($user);
+    }
+
     public function manageCoOrganizers(User $user, Event $event): bool
     {
         return $event->user_id === $user->id;

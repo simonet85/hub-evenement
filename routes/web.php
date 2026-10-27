@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\CoOrganizerController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GuestbookController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
 use App\Http\Controllers\InvitationController;
@@ -21,6 +22,10 @@ Route::get('i/{token}/programme', [InvitationController::class, 'programme'])->n
 Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
     ->middleware('throttle:20,1')
     ->name('invitations.rsvp');
+
+Route::post('i/{token}/livre-dor', [GuestbookController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('guestbook.store');
 
 Route::get('relances/desinscription/{guest}', [ReminderController::class, 'unsubscribeShow'])
     ->middleware('signed')
@@ -65,6 +70,11 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/relances', [ReminderController::class, 'store'])
         ->middleware('throttle:10,1')
         ->name('reminders.store');
+
+    Route::get('events/{event}/livre-dor', [GuestbookController::class, 'index'])->name('guestbook.index');
+    Route::post('events/{event}/livre-dor/{entry}/approuver', [GuestbookController::class, 'approve'])->name('guestbook.approve');
+    Route::post('events/{event}/livre-dor/{entry}/masquer', [GuestbookController::class, 'hide'])->name('guestbook.hide');
+    Route::post('events/{event}/livre-dor/{entry}/rejeter', [GuestbookController::class, 'reject'])->name('guestbook.reject');
 
     Route::post('events/{event}/co-organizers', [CoOrganizerController::class, 'store'])->name('co-organizers.store');
     Route::delete('events/{event}/co-organizers/{user}', [CoOrganizerController::class, 'destroy'])->name('co-organizers.destroy');

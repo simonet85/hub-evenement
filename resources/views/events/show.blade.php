@@ -44,6 +44,9 @@
                 <a href="{{ route('reminders.index', $event) }}" class="btn btn-secondary">
                     Relancer les foyers
                 </a>
+                <a href="{{ route('guestbook.index', $event) }}" class="btn btn-secondary">
+                    Livre d'or{{ $stats['guestbook_pending'] > 0 ? ' ('.$stats['guestbook_pending'].')' : '' }}
+                </a>
                 @can('update', $event)
                     <a href="{{ route('events.edit', $event) }}" class="btn btn-secondary">
                         Modifier l'événement

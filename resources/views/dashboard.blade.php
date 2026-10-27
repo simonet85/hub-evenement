@@ -61,9 +61,16 @@
                             </dl>
 
                             <div class="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
-                                <span class="status-pill">
-                                    {{ $event->guests_count }} foyer{{ $event->guests_count > 1 ? 's' : '' }}
-                                </span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="status-pill">
+                                        {{ $event->guests_count }} foyer{{ $event->guests_count > 1 ? 's' : '' }}
+                                    </span>
+                                    @if ($event->pending_guestbook_count > 0)
+                                        <a href="{{ route('guestbook.index', $event) }}" class="status-pill status-pill-warning">
+                                            {{ $event->pending_guestbook_count }} message{{ $event->pending_guestbook_count > 1 ? 's' : '' }} à modérer
+                                        </a>
+                                    @endif
+                                </div>
                                 <div class="flex items-center gap-4">
                                     @can('update', $event)
                                         <a href="{{ route('events.edit', $event) }}" class="text-label text-ink-muted hover:text-ink">

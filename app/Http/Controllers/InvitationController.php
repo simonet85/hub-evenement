@@ -19,10 +19,16 @@ class InvitationController extends Controller
     {
         $guest = $this->guest($token);
 
+        $guestbookEntries = $guest->event->guestbookEntries()
+            ->approved()
+            ->latest()
+            ->paginate(10, ['*'], 'livre_dor_page');
+
         return view('invitations.show', [
             'guest' => $guest,
             'event' => $guest->event,
             'qrCode' => $qrCodes->dataUri($guest),
+            'guestbookEntries' => $guestbookEntries,
         ]);
     }
 

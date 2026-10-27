@@ -75,6 +75,11 @@ class Event extends Model
         return $this->hasMany(Reminder::class);
     }
 
+    public function guestbookEntries(): HasMany
+    {
+        return $this->hasMany(GuestbookEntry::class);
+    }
+
     public function hasCoordinates(): bool
     {
         return $this->latitude !== null && $this->longitude !== null;

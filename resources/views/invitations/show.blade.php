@@ -214,6 +214,65 @@
                         La réponse n'est plus modifiable. Contactez les organisateurs pour toute correction.
                     </p>
                 @endif
+
+                <section id="livre-dor" class="mt-8 border-t border-line pt-6" aria-labelledby="livre-dor-title">
+                    <div class="flex flex-wrap items-end justify-between gap-2">
+                        <div>
+                            <p class="eyebrow">Livre d'or</p>
+                            <h2 id="livre-dor-title" class="mt-1 font-display text-heading text-ink">Vos vœux et vos souvenirs</h2>
+                        </div>
+                        @if ($guestbookEntries->total() > 0)
+                            <span class="status-pill">
+                                {{ $guestbookEntries->total() }} message{{ $guestbookEntries->total() > 1 ? 's' : '' }}
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        @forelse ($guestbookEntries as $entry)
+                            <article class="rounded-sm border border-line bg-surface-300 p-4">
+                                <p class="whitespace-pre-line text-body text-ink">{{ $entry->message }}</p>
+                                <p class="mt-3 text-caption text-ink-muted">
+                                    {{ $entry->author_name }} · {{ $entry->created_at->translatedFormat('j F Y') }}
+                                </p>
+                            </article>
+                        @empty
+                            <p class="text-body text-ink-muted">Aucun message publié pour l'instant. Soyez le premier à signer.</p>
+                        @endforelse
+                    </div>
+
+                    @if ($guestbookEntries->hasPages())
+                        <div class="mt-4">{{ $guestbookEntries->links() }}</div>
+                    @endif
+
+                    <form method="POST" action="{{ route('guestbook.store', $guest->invitation_token) }}" class="mt-6 space-y-5">
+                        @csrf
+
+                        <div class="hidden" aria-hidden="true">
+                            <label for="website_url">Site web</label>
+                            <input id="website_url" name="website_url" type="text" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div>
+                            <label for="author_name" class="label">Votre nom</label>
+                            <input id="author_name" name="author_name" type="text" maxlength="80" required class="field mt-1" value="{{ old('author_name', $guest->name) }}">
+                            @error('author_name')
+                                <p class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="guestbook_message" class="label">Votre message</label>
+                            <textarea id="guestbook_message" name="message" rows="4" maxlength="1000" required class="field mt-1" placeholder="Félicitations, souvenir, vœu…">{{ old('message') }}</textarea>
+                            <p class="help mt-1">1 000 caractères maximum. Votre message sera visible après validation par les organisateurs.</p>
+                            @error('message')
+                                <p class="error-text mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full">Signer le livre d'or</button>
+                    </form>
+                </section>
             </div>
         </article>
 
