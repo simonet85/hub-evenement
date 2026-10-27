@@ -11,6 +11,7 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProgramStepController;
+use App\Http\Controllers\ReminderController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -20,6 +21,13 @@ Route::get('i/{token}/programme', [InvitationController::class, 'programme'])->n
 Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
     ->middleware('throttle:20,1')
     ->name('invitations.rsvp');
+
+Route::get('relances/desinscription/{guest}', [ReminderController::class, 'unsubscribeShow'])
+    ->middleware('signed')
+    ->name('reminders.unsubscribe.show');
+Route::post('relances/desinscription/{guest}', [ReminderController::class, 'unsubscribe'])
+    ->middleware('signed')
+    ->name('reminders.unsubscribe');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -52,6 +60,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('events/{event}/guests/{guest}', [GuestController::class, 'destroy'])->name('guests.destroy');
     Route::post('events/{event}/guests/{guest}/invitation', [GuestController::class, 'regenerateInvitation'])->name('guests.invitation.regenerate');
     Route::post('events/{event}/guests/import', [GuestImportController::class, 'store'])->name('guests.import');
+
+    Route::get('events/{event}/relances', [ReminderController::class, 'index'])->name('reminders.index');
+    Route::post('events/{event}/relances', [ReminderController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('reminders.store');
 
     Route::post('events/{event}/co-organizers', [CoOrganizerController::class, 'store'])->name('co-organizers.store');
     Route::delete('events/{event}/co-organizers/{user}', [CoOrganizerController::class, 'destroy'])->name('co-organizers.destroy');

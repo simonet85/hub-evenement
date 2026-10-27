@@ -41,6 +41,9 @@
                 <a href="{{ route('check-in.scan', $event) }}" class="btn btn-primary">
                     Scanner les entrées
                 </a>
+                <a href="{{ route('reminders.index', $event) }}" class="btn btn-secondary">
+                    Relancer les foyers
+                </a>
                 @can('update', $event)
                     <a href="{{ route('events.edit', $event) }}" class="btn btn-secondary">
                         Modifier l'événement

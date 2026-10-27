@@ -2,7 +2,7 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 5 — Programme et carte
+## État : Phase 6 — Relances
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
@@ -24,6 +24,9 @@ Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invi
 - Code vestimentaire global affiché sur l'invitation et la page programme.
 - Repère placé sur une carte OpenStreetMap (Leaflet) à la création ou l'édition de l'événement ; coordonnées saisissables manuellement.
 - Page programme et carte accessible par le lien personnel de chaque foyer (`/i/{jeton}/programme`), avec itinéraire Google Maps et Waze, non indexable et sans fuite du jeton.
+- Relances manuelles groupées des foyers sans réponse : sélection, compteurs, deux relances au maximum espacées de 24 heures.
+- E-mail de relance avec invitation personnelle et désinscription propre à l'événement ; le foyer désinscrit garde l'accès à son invitation et au RSVP.
+- Lien WhatsApp pré-rempli par foyer (nom, événement, date, lieu, invitation) avec normalisation du numéro.
 - Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
@@ -50,13 +53,13 @@ Les secrets de développement sont déjà alignés entre `.env.example`, `compos
 
 Le QR d'entrée encode des URL absolues : en production, renseignez `APP_URL` avec le domaine HTTPS définitif avant de générer les invitations.
 
-Les reçus de réponse passent par la file d'attente `database`. En développement, lancez un worker dans un terminal dédié :
+Les reçus de réponse et les relances passent par la file d'attente `database`. En développement, lancez un worker dans un terminal dédié :
 
 ```bash
 docker compose exec app php artisan queue:work
 ```
 
-En production, un cron exécute `php artisan queue:work --stop-when-empty` ou un superviseur équivalent.
+En production, un cron exécute `php artisan queue:work --stop-when-empty` ou un superviseur équivalent. Un seul worker traite la file : les e-mails d'un lot de relances partent l'un après l'autre.
 
 ## Tests
 
@@ -70,8 +73,9 @@ Les tests forcent SQLite en mémoire via `phpunit.xml`, même dans le conteneur 
 
 ```
 app/Http/Controllers/Auth/   inscription, connexion, réinitialisation
-app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme
-app/Mail/                    reçu de réponse RSVP (file d'attente)
+app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances
+app/Jobs/                    envoi des e-mails de relance (file d'attente)
+app/Mail/                    reçu de réponse RSVP et relance (file d'attente)
 app/Models/                  modèles Eloquent
 app/Policies/                autorisations des événements
 app/Services/                import CSV, QR d'entrée, pointage et compteurs
@@ -83,7 +87,8 @@ resources/js/program-map.js  carte en lecture seule de la page programme
 resources/views/check-in/    page de scan et page directe de pointage
 resources/views/events/      création, édition et détail d'un événement
 resources/views/invitations/ invitation publique, QR, formulaire RSVP et page programme
-resources/views/mail/        reçu e-mail de réponse
+resources/views/reminders/   page relances et confirmation de désinscription
+resources/views/mail/        reçus et relances e-mail
 specs/                       mission, tech-stack, roadmap, spécifications de phase
 .docker/php/Dockerfile       image PHP de développement
 compose.yaml                 app, MySQL, Mailpit, build des assets
@@ -91,7 +96,7 @@ compose.yaml                 app, MySQL, Mailpit, build des assets
 
 ## Prochaines étapes
 
-La Phase 6 couvre les relances. Voir [`specs/roadmap.md`](specs/roadmap.md).
+La Phase 7 couvre le livre d'or. Voir [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 

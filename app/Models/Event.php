@@ -70,6 +70,11 @@ class Event extends Model
         return $this->hasMany(ProgramStep::class)->orderBy('position')->orderBy('id');
     }
 
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(Reminder::class);
+    }
+
     public function hasCoordinates(): bool
     {
         return $this->latitude !== null && $this->longitude !== null;
