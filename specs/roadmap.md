@@ -19,17 +19,17 @@ Les phases sont volontairement petites : chacune est une tranche livrable, testa
 - **Fin** : un organisateur crée un événement et importe 50 foyers sans erreur.
 
 ## Phase 3 — Invitation publique et RSVP (J3a)
-- Jeton d'invitation non devinable, URL signée `/i/{token}`, révocation.
-- Page d'invitation personnalisée : noms, foyer, date, lieu, QR, boutons.
+- Jeton d'invitation non devinable, URL `/i/{token}`, révocation.
+- Page d'invitation personnalisée : noms, foyer, date, lieu et places.
 - Formulaire RSVP : présence, nombre de personnes (plafonné), prénoms, régime, message.
 - Page de confirmation, e-mail de reçu au foyer, mise à jour du récapitulatif organisateur.
 - **Fin** : un invité répond depuis son lien sur mobile, et l'organisateur voit la réponse.
 
 ## Phase 4 — QR code et pointage (J3b)
-- QR SVG personnel généré côté serveur, téléchargeable et intégré à l'invitation.
-- Page mobile de scan à l'entrée, protégée par jeton d'événement.
-- Pointage : présent, déjà scanné, invalide ; compteur de présents en direct.
-- **Fin** : un agent d'entrée scanne un QR et le pointage est enregistré.
+- QR SVG personnel généré côté serveur, téléchargeable et intégré à l'invitation ; jeton d'entrée distinct du jeton d'invitation.
+- Page mobile de scan réservée aux comptes de l'événement (propriétaire et co-organisateurs), avec caméra et saisie manuelle.
+- Pointage : présent, déjà pointé, confirmation pour un foyer sans réponse ou décliné, annulation ; compteurs de foyers et couverts pointés.
+- **Fin** : un organisateur scanne un QR à l'entrée et le pointage est enregistré, visible et annulable.
 
 ## Phase 5 — Programme et carte (J3b)
 - Étapes du programme horaires et lieux ; code vestimentaire.

@@ -30,6 +30,19 @@ class GuestController extends Controller
         return back()->with('status', 'Foyer supprimé.');
     }
 
+    public function regenerateInvitation(Event $event, Guest $guest): RedirectResponse
+    {
+        Gate::authorize('manageGuests', $event);
+
+        abort_unless($guest->event_id === $event->id, 404);
+
+        $guest->forceFill([
+            'invitation_token' => Guest::generateInvitationToken(),
+        ])->save();
+
+        return back()->with('status', "Nouveau lien généré. L'ancien ne fonctionne plus.");
+    }
+
     /**
      * @return array<string, mixed>
      */

@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Guest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class GuestImporter
 {
@@ -70,6 +71,8 @@ class GuestImporter
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['phone'] ?? null,
                 'allowed_seats' => $validated['allowed_seats'] ?? 1,
+                'invitation_token' => Str::random(48),
+                'entry_token' => Str::random(48),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

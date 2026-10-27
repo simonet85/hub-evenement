@@ -34,21 +34,46 @@
                 @endcannot
             </div>
 
-            @can('update', $event)
-                <a href="{{ route('events.edit', $event) }}" class="btn btn-secondary">
-                    Modifier l'événement
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('check-in.scan', $event) }}" class="btn btn-primary">
+                    Scanner les entrées
                 </a>
-            @endcan
+                @can('update', $event)
+                    <a href="{{ route('events.edit', $event) }}" class="btn btn-secondary">
+                        Modifier l'événement
+                    </a>
+                @endcan
+            </div>
         </header>
 
-        <section aria-label="Chiffres clés" class="mt-8 grid max-w-md grid-cols-2 gap-4">
+        <section aria-label="Chiffres clés" class="mt-8 grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
             <div class="card p-4">
                 <p class="eyebrow">Foyers</p>
-                <p class="mt-1 font-display text-heading text-accent">{{ $event->guests->count() }}</p>
+                <p class="mt-1 font-display text-heading text-accent">{{ $stats['households'] }}</p>
             </div>
             <div class="card p-4">
                 <p class="eyebrow">Places prévues</p>
-                <p class="mt-1 font-display text-heading text-accent">{{ $event->guests->sum('allowed_seats') }}</p>
+                <p class="mt-1 font-display text-heading text-accent">{{ $stats['seats'] }}</p>
+            </div>
+            <div class="card p-4">
+                <p class="eyebrow">Réponses</p>
+                <p class="mt-1 font-display text-heading text-accent">{{ $stats['responded'] }}</p>
+            </div>
+            <div class="card p-4">
+                <p class="eyebrow">Couverts</p>
+                <p class="mt-1 font-display text-heading text-accent">{{ $stats['coming'] }}</p>
+            </div>
+            <div class="card p-4">
+                <p class="eyebrow">Foyers pointés</p>
+                <p class="mt-1 font-display text-heading text-accent">
+                    {{ $stats['checked_in_households'] }} / {{ $stats['households'] }}
+                </p>
+            </div>
+            <div class="card p-4">
+                <p class="eyebrow">Couverts pointés</p>
+                <p class="mt-1 font-display text-heading text-accent">
+                    {{ $stats['checked_in_seats'] }} / {{ $stats['seats'] }}
+                </p>
             </div>
         </section>
 
@@ -68,25 +93,95 @@
                 @else
                     <ul role="list" class="mt-4 divide-y divide-line">
                         @foreach ($event->guests as $guest)
-                            <li class="flex flex-wrap items-start justify-between gap-3 py-3">
-                                <div>
-                                    <p class="text-label text-ink">{{ $guest->name }}</p>
-                                    <p class="text-caption text-ink-muted">
-                                        {{ collect([$guest->email, $guest->phone])->filter()->implode(' · ') ?: 'Sans contact' }}
-                                    </p>
+                            <li class="py-4">
+                                <div class="flex flex-wrap items-start justify-between gap-3">
+                                    <div>
+                                        <p class="text-label text-ink">{{ $guest->name }}</p>
+                                        <p class="text-caption text-ink-muted">
+                                            {{ collect([$guest->email, $guest->phone])->filter()->implode(' · ') ?: 'Sans contact' }}
+                                        </p>
+                                        <div class="mt-2 flex flex-wrap items-center gap-2">
+                                            <x-rsvp-status :guest="$guest" />
+                                            @if ($guest->hasCheckedIn())
+                                                <span class="status-pill status-pill-success">
+                                                    Pointé · {{ $guest->checked_in_at->format('H\hi') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        @if ($guest->hasCheckedIn())
+                                            <p class="mt-2 text-caption text-success">
+                                                Entrée enregistrée le {{ $guest->checked_in_at->translatedFormat('j F Y \à H\hi') }}@if ($guest->checkedInBy)
+                                                    par {{ $guest->checkedInBy->name }}
+                                                @endif.
+                                            </p>
+                                        @endif
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="status-pill">
+                                            {{ $guest->allowed_seats }} place{{ $guest->allowed_seats > 1 ? 's' : '' }}
+                                        </span>
+                                        <form method="POST" action="{{ route('guests.destroy', [$event, $guest]) }}" onsubmit="return confirm('Supprimer ce foyer ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-caption font-semibold text-danger hover:underline">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="status-pill">
-                                        {{ $guest->allowed_seats }} place{{ $guest->allowed_seats > 1 ? 's' : '' }}
-                                    </span>
-                                    <form method="POST" action="{{ route('guests.destroy', [$event, $guest]) }}" onsubmit="return confirm('Supprimer ce foyer ?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-caption font-semibold text-danger hover:underline">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                </div>
+
+                                @if ($guest->hasResponded())
+                                    <details class="mt-2">
+                                        <summary class="cursor-pointer text-caption font-semibold text-accent">Détail de la réponse</summary>
+                                        <div class="mt-2 space-y-1 text-caption text-ink-muted">
+                                            <p>
+                                                <span class="font-semibold text-ink">Réponse du :</span>
+                                                {{ $guest->rsvp_responded_at->translatedFormat('j F Y') }}
+                                                à {{ $guest->rsvp_responded_at->format('H\hi') }}
+                                            </p>
+                                            @if ($guest->attendee_names)
+                                                <p>
+                                                    <span class="font-semibold text-ink">Prénoms :</span>
+                                                    <span class="whitespace-pre-line">{{ $guest->attendee_names }}</span>
+                                                </p>
+                                            @endif
+                                            @if ($guest->dietary_notes)
+                                                <p><span class="font-semibold text-ink">Régime :</span> {{ $guest->dietary_notes }}</p>
+                                            @endif
+                                            @if ($guest->rsvp_message)
+                                                <p><span class="font-semibold text-ink">Message :</span> {{ $guest->rsvp_message }}</p>
+                                            @endif
+                                        </div>
+                                    </details>
+                                @endif
+
+                                <details class="mt-2">
+                                    <summary class="cursor-pointer text-caption font-semibold text-accent">Invitation et QR d'entrée</summary>
+                                    <div class="mt-2 space-y-2">
+                                        <div class="flex flex-wrap gap-2">
+                                            <input
+                                                id="guest-link-{{ $guest->id }}"
+                                                type="text"
+                                                readonly
+                                                value="{{ $guest->invitationUrl() }}"
+                                                class="field min-w-0 flex-1 text-caption"
+                                                onclick="this.select()"
+                                            >
+                                            <button type="button" class="btn btn-secondary" data-copy-target="guest-link-{{ $guest->id }}">
+                                                Copier
+                                            </button>
+                                        </div>
+                                        <a href="{{ route('check-in.qr', [$event, $guest]) }}" class="inline-block text-caption font-semibold text-accent hover:underline">
+                                            Télécharger le QR d'entrée (SVG)
+                                        </a>
+                                        <form method="POST" action="{{ route('guests.invitation.regenerate', [$event, $guest]) }}" onsubmit="return confirm('Regénérer le lien ? L’ancien ne fonctionnera plus.')">
+                                            @csrf
+                                            <button type="submit" class="text-caption font-semibold text-danger hover:underline">
+                                                Regénérer le lien
+                                            </button>
+                                        </form>
+                                    </div>
+                                </details>
                             </li>
                         @endforeach
                     </ul>

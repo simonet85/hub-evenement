@@ -159,6 +159,15 @@
         outline-offset: 2px;
     }
 
+    [hidden] {
+        display: none !important;
+    }
+
+    input[type='radio'],
+    input[type='checkbox'] {
+        accent-color: var(--accent);
+    }
+
     ::selection {
         background-color: var(--accent);
         color: var(--on-accent);
@@ -287,5 +296,20 @@
         font-size: 13px;
         font-weight: 600;
         line-height: 18px;
+    }
+
+    .status-pill-success {
+        color: var(--success);
+        border-color: var(--success);
+    }
+
+    .status-pill-warning {
+        color: var(--warning);
+        border-color: var(--warning);
+    }
+
+    .status-pill-danger {
+        color: var(--danger);
+        border-color: var(--danger);
     }
 }

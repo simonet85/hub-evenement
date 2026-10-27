@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EventType;
+use App\Enums\RsvpStatus;
 use App\Models\Event;
+use App\Models\Guest;
+use App\Services\CheckInService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -12,6 +15,8 @@ use Illuminate\View\View;
 
 class EventController extends Controller
 {
+    public function __construct(private CheckInService $checkIns) {}
+
     public function index(Request $request): View
     {
         $events = Event::query()
@@ -46,11 +51,20 @@ class EventController extends Controller
         Gate::authorize('view', $event);
 
         $event->load([
-            'guests' => fn ($query) => $query->orderBy('name'),
+            'guests' => fn ($query) => $query->with('checkedInBy')->orderBy('name'),
             'roles.user',
         ]);
 
-        return view('events.show', ['event' => $event]);
+        $guests = $event->guests;
+
+        $stats = array_merge([
+            'households' => $guests->count(),
+            'seats' => (int) $guests->sum('allowed_seats'),
+            'responded' => $guests->filter(fn (Guest $guest) => $guest->hasResponded())->count(),
+            'coming' => (int) $guests->filter(fn (Guest $guest) => $guest->rsvp_status === RsvpStatus::Attending)->sum('rsvp_seats'),
+        ], $this->checkIns->counters($event));
+
+        return view('events.show', ['event' => $event, 'stats' => $stats]);
     }
 
     public function edit(Event $event): View

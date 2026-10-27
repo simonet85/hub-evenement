@@ -34,7 +34,9 @@ it('importe un CSV point-virgule avec en-tête et signale les lignes invalides',
         'allowed_seats' => 2,
     ]);
 
-    expect($event->guests()->count())->toBe(2);
+    expect($event->guests()->count())->toBe(2)
+        ->and($event->guests()->whereNotNull('invitation_token')->count())->toBe(2)
+        ->and($event->guests()->whereNotNull('entry_token')->count())->toBe(2);
 });
 
 it('importe un CSV virgule sans en-tête avec un BOM', function () {
