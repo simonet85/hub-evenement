@@ -19,6 +19,15 @@
                 <p class="text-body text-ink-muted">
                     {{ $event->venue_name }}@if ($event->venue_address) — {{ $event->venue_address }}@endif
                 </p>
+                @if ($event->dress_code)
+                    <p class="mt-1 text-caption text-ink-muted">Code vestimentaire : {{ $event->dress_code }}</p>
+                @endif
+
+                <div class="mt-5">
+                    <a href="{{ route('invitations.programme', $guest->invitation_token) }}" class="btn btn-secondary">
+                        Programme et carte
+                    </a>
+                </div>
 
                 <div class="mt-8 border-t border-line pt-6">
                     <p class="eyebrow">Invitation pour</p>

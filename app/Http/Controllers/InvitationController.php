@@ -26,6 +26,17 @@ class InvitationController extends Controller
         ]);
     }
 
+    public function programme(string $token): View
+    {
+        $guest = $this->guest($token);
+        $guest->event->load('programSteps');
+
+        return view('invitations.programme', [
+            'guest' => $guest,
+            'event' => $guest->event,
+        ]);
+    }
+
     public function rsvp(Request $request, string $token): RedirectResponse
     {
         $guest = $this->guest($token);

@@ -27,6 +27,11 @@ class EventPolicy
         return $event->hasMember($user);
     }
 
+    public function manageProgram(User $user, Event $event): bool
+    {
+        return $event->hasMember($user);
+    }
+
     public function manageCoOrganizers(User $user, Event $event): bool
     {
         return $event->user_id === $user->id;

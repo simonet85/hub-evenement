@@ -24,6 +24,9 @@
                 <p class="text-body text-ink-muted">
                     {{ $event->venue_name }}@if ($event->venue_address) — {{ $event->venue_address }}@endif
                 </p>
+                @if ($event->dress_code)
+                    <p class="mt-1 text-caption text-ink-muted">Code vestimentaire : {{ $event->dress_code }}</p>
+                @endif
                 @if ($event->rsvp_deadline)
                     <p class="mt-1 text-caption text-ink-muted">
                         Réponses attendues avant le {{ $event->rsvp_deadline->translatedFormat('j F Y') }}
@@ -374,5 +377,271 @@
                 @endcan
             </aside>
         </div>
+
+        <section aria-labelledby="programme-title" class="card mt-8 p-6">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                    <h2 id="programme-title" class="font-display text-heading text-ink">Programme</h2>
+                    <p class="mt-1 text-caption text-ink-muted">
+                        {{ $event->programSteps->count() }} étape{{ $event->programSteps->count() > 1 ? 's' : '' }}
+                        @if ($event->dress_code)
+                            · code vestimentaire renseigné
+                        @endif
+                    </p>
+                </div>
+                @if ($event->guests->isNotEmpty())
+                    <a
+                        href="{{ route('invitations.programme', $event->guests->first()->invitation_token) }}"
+                        class="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Voir la page programme
+                    </a>
+                @endif
+            </div>
+
+            @if ($event->programSteps->isEmpty())
+                <p class="mt-4 text-body text-ink-muted">
+                    Aucune étape pour l'instant. Ajoutez la cérémonie, la réception, le dîner…
+                </p>
+            @else
+                <ol role="list" class="mt-6 divide-y divide-line">
+                    @foreach ($event->programSteps as $step)
+                        <li class="py-4">
+                            <div class="flex flex-wrap items-start justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-caption font-semibold text-accent">
+                                        {{ $step->start_time }}@if ($step->end_time) – {{ $step->end_time }}@endif
+                                    </p>
+                                    <p class="text-label text-ink">{{ $step->title }}</p>
+                                    @if ($step->location)
+                                        <p class="text-caption text-ink-muted">{{ $step->location }}</p>
+                                    @endif
+                                    @if ($step->description)
+                                        <p class="mt-1 text-caption text-ink-muted">{{ $step->description }}</p>
+                                    @endif
+                                </div>
+
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <form method="POST" action="{{ route('program-steps.move', [$event, $step]) }}">
+                                        @csrf
+                                        <input type="hidden" name="direction" value="up">
+                                        <button
+                                            type="submit"
+                                            class="text-caption font-semibold text-accent hover:underline disabled:opacity-40"
+                                            @disabled($loop->first)
+                                            aria-label="Monter {{ $step->title }}"
+                                        >
+                                            Monter
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ route('program-steps.move', [$event, $step]) }}">
+                                        @csrf
+                                        <input type="hidden" name="direction" value="down">
+                                        <button
+                                            type="submit"
+                                            class="text-caption font-semibold text-accent hover:underline disabled:opacity-40"
+                                            @disabled($loop->last)
+                                            aria-label="Descendre {{ $step->title }}"
+                                        >
+                                            Descendre
+                                        </button>
+                                    </form>
+                                    <form
+                                        method="POST"
+                                        action="{{ route('program-steps.destroy', [$event, $step]) }}"
+                                        onsubmit="return confirm('Supprimer cette étape ?')"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-caption font-semibold text-danger hover:underline">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <details class="mt-2">
+                                <summary class="cursor-pointer text-caption font-semibold text-accent">
+                                    Modifier l'étape
+                                </summary>
+                                <form
+                                    method="POST"
+                                    action="{{ route('program-steps.update', [$event, $step]) }}"
+                                    class="mt-3 grid gap-3 sm:grid-cols-2"
+                                >
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div>
+                                        <label for="step_{{ $step->id }}_start_time" class="label">Début</label>
+                                        <input
+                                            id="step_{{ $step->id }}_start_time"
+                                            name="start_time"
+                                            type="time"
+                                            value="{{ old('start_time', $step->start_time) }}"
+                                            required
+                                            class="field mt-1"
+                                        >
+                                    </div>
+
+                                    <div>
+                                        <label for="step_{{ $step->id }}_end_time" class="label">
+                                            Fin <span class="font-normal text-ink-muted">(facultatif)</span>
+                                        </label>
+                                        <input
+                                            id="step_{{ $step->id }}_end_time"
+                                            name="end_time"
+                                            type="time"
+                                            value="{{ old('end_time', $step->end_time) }}"
+                                            class="field mt-1"
+                                        >
+                                    </div>
+
+                                    <div class="sm:col-span-2">
+                                        <label for="step_{{ $step->id }}_title" class="label">Titre</label>
+                                        <input
+                                            id="step_{{ $step->id }}_title"
+                                            name="title"
+                                            type="text"
+                                            value="{{ old('title', $step->title) }}"
+                                            maxlength="120"
+                                            required
+                                            class="field mt-1"
+                                        >
+                                    </div>
+
+                                    <div class="sm:col-span-2">
+                                        <label for="step_{{ $step->id }}_location" class="label">
+                                            Lieu <span class="font-normal text-ink-muted">(facultatif)</span>
+                                        </label>
+                                        <input
+                                            id="step_{{ $step->id }}_location"
+                                            name="location"
+                                            type="text"
+                                            value="{{ old('location', $step->location) }}"
+                                            maxlength="120"
+                                            class="field mt-1"
+                                        >
+                                    </div>
+
+                                    <div class="sm:col-span-2">
+                                        <label for="step_{{ $step->id }}_description" class="label">
+                                            Description <span class="font-normal text-ink-muted">(facultatif)</span>
+                                        </label>
+                                        <textarea
+                                            id="step_{{ $step->id }}_description"
+                                            name="description"
+                                            rows="2"
+                                            maxlength="500"
+                                            class="field mt-1"
+                                        >{{ old('description', $step->description) }}</textarea>
+                                    </div>
+
+                                    <div class="sm:col-span-2">
+                                        <button type="submit" class="btn btn-primary">Enregistrer l'étape</button>
+                                    </div>
+                                </form>
+                            </details>
+                        </li>
+                    @endforeach
+                </ol>
+            @endif
+
+            <form
+                method="POST"
+                action="{{ route('program-steps.store', $event) }}"
+                class="mt-6 grid gap-3 border-t border-line pt-6 sm:grid-cols-2"
+            >
+                @csrf
+                <p class="text-label text-ink sm:col-span-2">Ajouter une étape</p>
+
+                <div>
+                    <label for="step_start_time" class="label">Début</label>
+                    <input
+                        id="step_start_time"
+                        name="start_time"
+                        type="time"
+                        value="{{ old('start_time') }}"
+                        required
+                        class="field mt-1 @error('start_time') field-error @enderror"
+                    >
+                    @error('start_time')
+                        <p class="error-text mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="step_end_time" class="label">
+                        Fin <span class="font-normal text-ink-muted">(facultatif)</span>
+                    </label>
+                    <input
+                        id="step_end_time"
+                        name="end_time"
+                        type="time"
+                        value="{{ old('end_time') }}"
+                        class="field mt-1 @error('end_time') field-error @enderror"
+                    >
+                    @error('end_time')
+                        <p class="error-text mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="step_title" class="label">Titre</label>
+                    <input
+                        id="step_title"
+                        name="title"
+                        type="text"
+                        value="{{ old('title') }}"
+                        maxlength="120"
+                        required
+                        placeholder="Cérémonie, réception, dîner…"
+                        class="field mt-1 @error('title') field-error @enderror"
+                    >
+                    @error('title')
+                        <p class="error-text mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="step_location" class="label">
+                        Lieu <span class="font-normal text-ink-muted">(facultatif)</span>
+                    </label>
+                    <input
+                        id="step_location"
+                        name="location"
+                        type="text"
+                        value="{{ old('location') }}"
+                        maxlength="120"
+                        class="field mt-1"
+                    >
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="step_description" class="label">
+                        Description <span class="font-normal text-ink-muted">(facultatif)</span>
+                    </label>
+                    <textarea
+                        id="step_description"
+                        name="description"
+                        rows="2"
+                        maxlength="500"
+                        class="field mt-1"
+                    >{{ old('description') }}</textarea>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <button type="submit" class="btn btn-secondary">Ajouter l'étape</button>
+                </div>
+            </form>
+
+            @if ($event->guests->isEmpty())
+                <p class="mt-4 text-caption text-ink-muted">
+                    Ajoutez un foyer pour partager la page programme avec vos invités.
+                </p>
+            @endif
+        </section>
     </div>
 @endsection

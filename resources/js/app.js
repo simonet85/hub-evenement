@@ -4,6 +4,14 @@ if (document.querySelector('[data-scan]')) {
     import('./scanner.js');
 }
 
+if (document.querySelector('[data-map-picker]')) {
+    import('./map-picker.js');
+}
+
+if (document.querySelector('[data-program-map]')) {
+    import('./program-map.js');
+}
+
 const rsvpForm = document.querySelector('[data-rsvp-form]');
 
 if (rsvpForm) {

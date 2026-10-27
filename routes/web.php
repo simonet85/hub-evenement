@@ -10,11 +10,13 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\ProgramStepController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 
 Route::get('i/{token}', [InvitationController::class, 'show'])->name('invitations.show');
+Route::get('i/{token}/programme', [InvitationController::class, 'programme'])->name('invitations.programme');
 Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
     ->middleware('throttle:20,1')
     ->name('invitations.rsvp');
@@ -53,6 +55,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('events/{event}/co-organizers', [CoOrganizerController::class, 'store'])->name('co-organizers.store');
     Route::delete('events/{event}/co-organizers/{user}', [CoOrganizerController::class, 'destroy'])->name('co-organizers.destroy');
+
+    Route::post('events/{event}/programme', [ProgramStepController::class, 'store'])->name('program-steps.store');
+    Route::put('events/{event}/programme/{step}', [ProgramStepController::class, 'update'])->name('program-steps.update');
+    Route::delete('events/{event}/programme/{step}', [ProgramStepController::class, 'destroy'])->name('program-steps.destroy');
+    Route::post('events/{event}/programme/{step}/move', [ProgramStepController::class, 'move'])->name('program-steps.move');
 
     Route::get('events/{event}/scan', [CheckInController::class, 'scan'])->name('check-in.scan');
     Route::post('events/{event}/scan', [CheckInController::class, 'record'])->name('check-in.record');

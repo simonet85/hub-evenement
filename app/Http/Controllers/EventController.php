@@ -53,6 +53,7 @@ class EventController extends Controller
         $event->load([
             'guests' => fn ($query) => $query->with('checkedInBy')->orderBy('name'),
             'roles.user',
+            'programSteps',
         ]);
 
         $guests = $event->guests;
@@ -96,6 +97,9 @@ class EventController extends Controller
             'starts_at' => ['required', 'date'],
             'venue_name' => ['required', 'string', 'max:160'],
             'venue_address' => ['nullable', 'string', 'max:255'],
+            'dress_code' => ['nullable', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitude'],
             'rsvp_deadline' => ['nullable', 'date', 'before_or_equal:starts_at'],
         ]);
     }

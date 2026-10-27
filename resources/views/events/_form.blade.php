@@ -100,6 +100,84 @@
             @enderror
         </div>
 
+        <div class="sm:col-span-2">
+            <label for="dress_code" class="label">
+                Code vestimentaire <span class="font-normal text-ink-muted">(facultatif)</span>
+            </label>
+            <input
+                id="dress_code"
+                name="dress_code"
+                type="text"
+                value="{{ old('dress_code', $event?->dress_code) }}"
+                maxlength="255"
+                placeholder="Tenue de cérémonie, couleurs claires…"
+                class="field mt-1 @error('dress_code') field-error @enderror"
+                @error('dress_code') aria-invalid="true" aria-describedby="dress_code-error" @enderror
+            >
+            @error('dress_code')
+                <p id="dress_code-error" class="error-text mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="sm:col-span-2">
+            <span class="label">Repère sur la carte</span>
+            <p class="help mt-1">Cliquez sur la carte pour placer le lieu de l'événement.</p>
+            <div
+                data-map-picker
+                data-lat-input="latitude"
+                data-lng-input="longitude"
+                class="mt-2 h-72 w-full rounded-sm border border-line bg-surface-300"
+                role="application"
+                aria-label="Carte OpenStreetMap pour placer le lieu"
+            ></div>
+            <div class="mt-2 flex flex-wrap items-center gap-3">
+                <p data-map-status class="text-caption text-ink-muted">Aucun repère placé.</p>
+                <button type="button" data-map-clear class="text-caption font-semibold text-danger hover:underline">
+                    Retirer le repère
+                </button>
+            </div>
+            <noscript>
+                <p class="help mt-2">La carte interactive nécessite JavaScript. Saisissez les coordonnées ci-dessous.</p>
+            </noscript>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                <div>
+                    <label for="latitude" class="label">Latitude</label>
+                    <input
+                        id="latitude"
+                        name="latitude"
+                        type="number"
+                        step="0.000001"
+                        min="-90"
+                        max="90"
+                        value="{{ old('latitude', $event?->latitude) }}"
+                        class="field mt-1 @error('latitude') field-error @enderror"
+                        @error('latitude') aria-invalid="true" aria-describedby="latitude-error" @enderror
+                    >
+                    @error('latitude')
+                        <p id="latitude-error" class="error-text mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="longitude" class="label">Longitude</label>
+                    <input
+                        id="longitude"
+                        name="longitude"
+                        type="number"
+                        step="0.000001"
+                        min="-180"
+                        max="180"
+                        value="{{ old('longitude', $event?->longitude) }}"
+                        class="field mt-1 @error('longitude') field-error @enderror"
+                        @error('longitude') aria-invalid="true" aria-describedby="longitude-error" @enderror
+                    >
+                    @error('longitude')
+                        <p id="longitude-error" class="error-text mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+            <p class="help mt-1">Facultatif. Sans repère, la carte n'apparaît pas sur la page programme.</p>
+        </div>
+
         <div>
             <label for="rsvp_deadline" class="label">
                 Date limite de réponse <span class="font-normal text-ink-muted">(facultatif)</span>

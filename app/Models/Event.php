@@ -19,6 +19,9 @@ class Event extends Model
         'starts_at',
         'venue_name',
         'venue_address',
+        'dress_code',
+        'latitude',
+        'longitude',
         'rsvp_deadline',
     ];
 
@@ -28,6 +31,8 @@ class Event extends Model
             'type' => EventType::class,
             'starts_at' => 'datetime',
             'rsvp_deadline' => 'date',
+            'latitude' => 'float',
+            'longitude' => 'float',
         ];
     }
 
@@ -58,5 +63,35 @@ class Event extends Model
     {
         return $this->user_id === $user->id
             || $this->roles()->where('user_id', $user->id)->exists();
+    }
+
+    public function programSteps(): HasMany
+    {
+        return $this->hasMany(ProgramStep::class)->orderBy('position')->orderBy('id');
+    }
+
+    public function hasCoordinates(): bool
+    {
+        return $this->latitude !== null && $this->longitude !== null;
+    }
+
+    public function googleMapsUrl(): string
+    {
+        if ($this->hasCoordinates()) {
+            return 'https://www.google.com/maps/dir/?api=1&destination='.$this->latitude.','.$this->longitude;
+        }
+
+        $query = trim($this->venue_name.' '.$this->venue_address);
+
+        return 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($query);
+    }
+
+    public function wazeUrl(): ?string
+    {
+        if (! $this->hasCoordinates()) {
+            return null;
+        }
+
+        return 'https://waze.com/ul?ll='.$this->latitude.'%2C'.$this->longitude.'&navigate=yes';
     }
 }
