@@ -8,7 +8,7 @@ Les phases sont volontairement petites : chacune est une tranche livrable, testa
 - Projet Laravel 12, Livewire 3, Tailwind, Pest, MySQL configurés.
 - Jetons « Papier & lumière » traduits en configuration Tailwind et variables CSS.
 - Authentification organisateur (inscription, connexion, réinitialisation).
-- Layout commun, pages d'erreur de base, intégration continue (tests + formatage).
+- Layout commun, pages d'erreur de base, tests Pest et formatage Pint en local (CI reportée).
 - **Fin** : un organisateur se connecte et voit un tableau de bord vide dans la charte validée.
 
 ## Phase 2 — Événements, foyers et invités
