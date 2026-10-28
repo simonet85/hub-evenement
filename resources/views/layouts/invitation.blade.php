@@ -20,16 +20,16 @@
     </a>
 
     <header class="border-b border-line">
-        <div class="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
+        <div class="mx-auto flex @yield('container', 'max-w-2xl') items-center justify-between gap-3 px-4 py-3">
             <a href="{{ route('home') }}" class="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap font-display text-xl text-ink">
                 Hub Événement
             </a>
-            <span class="eyebrow">Invitation privée</span>
+            <span class="eyebrow">@yield('eyebrow', 'Invitation privée')</span>
         </div>
     </header>
 
     <main id="contenu" class="flex-1">
-        <div class="mx-auto max-w-2xl px-4 py-8 sm:py-12">
+        <div class="mx-auto @yield('container', 'max-w-2xl') px-4 py-8 sm:py-12">
             @if (session('status'))
                 <x-alert tone="success" class="mb-4">{{ session('status') }}</x-alert>
             @endif
@@ -39,7 +39,7 @@
     </main>
 
     <footer class="border-t border-line">
-        <div class="mx-auto max-w-2xl px-4 py-6 text-center">
+        <div class="mx-auto @yield('container', 'max-w-2xl') px-4 py-6 text-center">
             <p class="text-caption text-ink-muted">Hub Événement — Abidjan, Côte d'Ivoire</p>
         </div>
     </footer>

@@ -4,9 +4,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CatererController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\CoOrganizerController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestbookController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PilotageController;
 use App\Http\Controllers\ProgramStepController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\ReminderController;
@@ -43,6 +46,14 @@ Route::post('i/{token}/livre-dor', [GuestbookController::class, 'store'])
 Route::get('galerie/photos/{photo}/{variant}', [GalleryController::class, 'serve'])
     ->middleware('signed')
     ->name('gallery.photo');
+
+Route::get('traiteur/{event}', [CatererController::class, 'show'])
+    ->middleware('signed')
+    ->name('caterer.show');
+Route::get('traiteur/{event}/exports/{format}', [CatererController::class, 'export'])
+    ->middleware('signed')
+    ->whereIn('format', ['csv', 'xlsx', 'pdf'])
+    ->name('caterer.export');
 
 Route::get('paiements/retour/{contribution}', [PaymentController::class, 'show'])
     ->middleware('signed')
@@ -131,6 +142,13 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/scan', [CheckInController::class, 'record'])->name('check-in.record');
     Route::delete('events/{event}/guests/{guest}/check-in', [CheckInController::class, 'undo'])->name('check-in.undo');
     Route::get('events/{event}/guests/{guest}/entry-qr.svg', [CheckInController::class, 'qr'])->name('check-in.qr');
+
+    Route::get('events/{event}/pilotage', [PilotageController::class, 'show'])->name('pilotage.show');
+    Route::post('events/{event}/pilotage/lien-traiteur', [PilotageController::class, 'catererLink'])->name('pilotage.caterer-link');
+
+    Route::get('events/{event}/exports/invites.csv', [ExportController::class, 'guestsCsv'])->name('exports.guests.csv');
+    Route::get('events/{event}/exports/invites.xlsx', [ExportController::class, 'guestsXlsx'])->name('exports.guests.xlsx');
+    Route::get('events/{event}/exports/traiteur.pdf', [ExportController::class, 'catererPdf'])->name('exports.caterer.pdf');
 
     Route::get('check-in/{entryToken}', [CheckInController::class, 'show'])->name('check-in.show');
     Route::post('check-in/{entryToken}', [CheckInController::class, 'store'])->name('check-in.store');

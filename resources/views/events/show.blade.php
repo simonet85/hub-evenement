@@ -38,7 +38,10 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-                <a href="{{ route('check-in.scan', $event) }}" class="btn btn-primary">
+                <a href="{{ route('pilotage.show', $event) }}" class="btn btn-primary">
+                    Pilotage et exports
+                </a>
+                <a href="{{ route('check-in.scan', $event) }}" class="btn btn-secondary">
                     Scanner les entrées
                 </a>
                 <a href="{{ route('reminders.index', $event) }}" class="btn btn-secondary">

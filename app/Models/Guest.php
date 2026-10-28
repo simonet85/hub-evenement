@@ -86,6 +86,20 @@ class Guest extends Model
         return $this->rsvp_responded_at !== null;
     }
 
+    public function confirmedSeats(): int
+    {
+        if ($this->rsvp_status !== RsvpStatus::Attending) {
+            return 0;
+        }
+
+        return (int) ($this->rsvp_seats ?? $this->allowed_seats);
+    }
+
+    public function hasDietaryNotes(): bool
+    {
+        return filled($this->dietary_notes);
+    }
+
     public function isPastDeadline(): bool
     {
         $deadline = $this->event?->rsvp_deadline;

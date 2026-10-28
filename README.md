@@ -2,7 +2,7 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 9 — Cadeaux, cagnotte et MoneyFusion
+## État : Phase 10 — Pilotage, exports et dossier traiteur
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
@@ -44,6 +44,13 @@ Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invi
 - Journal des paiements : référence, token, statut, note, remboursement manuel avec note obligatoire et encaissement hors ligne d'un paiement échoué.
 - Expiration automatique des paiements en attente après deux heures ; les contributions en attente retiennent leur montant jusqu'à expiration.
 - Compteurs de paiements en attente sur l'événement et le tableau de bord ; seuls les paiements confirmés comptent dans les totaux.
+- Page de pilotage dédiée (`/events/{événement}/pilotage`) : foyers présents, absents et en attente, places prévues, couverts confirmés, régimes signalés et files de modération.
+- Évolution des réponses sur 14 jours glissants, avec jours sans réponse et cumul incluant les réponses antérieures.
+- Export des invités en CSV (UTF-8 avec BOM, séparateur point-virgule) ou Excel, avec coordonnées, réponse, couverts, régimes et pointage ; les cellules commençant par `=`, `+`, `-` ou `@` sont neutralisées.
+- Dossier traiteur PDF paysage : synthèse, foyers présents, couverts, prénoms et régimes, sans aucune coordonnée.
+- Exports couverts CSV/Excel réservés aux foyers présents, sans e-mail, téléphone, message privé ni jeton.
+- Lien traiteur signé, utilisable sans compte, valable 24 heures, 7 jours (par défaut) ou 30 jours ; les téléchargements reprennent la même expiration.
+- Portail traiteur non indexable et sans `Referer` ; un lien absent, altéré ou expiré renvoie 403.
 - Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
@@ -108,25 +115,29 @@ Les tests forcent SQLite en mémoire via `phpunit.xml`, même dans le conteneur 
 
 ```
 app/Http/Controllers/Auth/   inscription, connexion, réinitialisation
-app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or, galerie photo, cadeaux et paiements
+app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or, galerie photo, cadeaux et paiements, pilotage, exports
 app/Enums/                   statuts et types de contribution
 app/Jobs/                    envoi des e-mails de relance et génération des dérivés photo (file d'attente)
 app/Mail/                    reçu de réponse RSVP et relance (file d'attente)
 app/Models/                  modèles Eloquent
 app/Policies/                autorisations des événements
-app/Services/                import CSV, QR d'entrée, pointage, compteurs, contributions
+app/Services/                import CSV, QR d'entrée, pointage, compteurs, contributions, métriques de pilotage
+app/Services/Exports/        exports invités et couverts (CSV, XLSX OpenSpout, PDF Dompdf)
 app/Services/MoneyFusion/    passerelle réelle (paquet) et simulateur local
 design-system/tokens.json    source de vérité des jetons
 resources/css/app.css        variables CSS + thème Tailwind 4
 resources/js/scanner.js      caméra et pointage (html5-qrcode)
 resources/js/map-picker.js   choix du repère sur la carte (Leaflet)
 resources/js/program-map.js  carte en lecture seule de la page programme
+resources/views/caterer/     portail traiteur signé en lecture seule
 resources/views/check-in/    page de scan et page directe de pointage
 resources/views/events/      création, édition et détail d'un événement
+resources/views/exports/     gabarit PDF du dossier traiteur
 resources/views/gallery/     galerie invitée et modération des photos
 resources/views/guestbook/   file de modération du livre d'or
 resources/views/invitations/ invitation publique, QR, formulaire RSVP et page programme
 resources/views/payments/    simulateur local et page de retour signée
+resources/views/pilotage/    tableau de bord de pilotage et génération du lien traiteur
 resources/views/registry/    page invité cadeaux et cagnotte, journal organisateur
 resources/views/reminders/   page relances et confirmation de désinscription
 resources/views/mail/        reçus et relances e-mail
@@ -137,7 +148,7 @@ compose.yaml                 app, MySQL, Mailpit, build des assets
 
 ## Prochaines étapes
 
-La Phase 10 couvre le tableau de bord, les exports traiteur et le lien de lecture seule. Voir [`specs/roadmap.md`](specs/roadmap.md).
+La Phase 11 couvre les animations et l'accessibilité. Voir [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 
