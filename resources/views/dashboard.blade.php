@@ -70,6 +70,11 @@
                                             {{ $event->pending_guestbook_count }} message{{ $event->pending_guestbook_count > 1 ? 's' : '' }} à modérer
                                         </a>
                                     @endif
+                                    @if ($event->pending_photos_count > 0)
+                                        <a href="{{ route('gallery.index', $event) }}" class="status-pill status-pill-warning">
+                                            {{ $event->pending_photos_count }} photo{{ $event->pending_photos_count > 1 ? 's' : '' }} à modérer
+                                        </a>
+                                    @endif
                                 </div>
                                 <div class="flex items-center gap-4">
                                     @can('update', $event)

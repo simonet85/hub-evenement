@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\EventType;
 use App\Enums\GuestbookStatus;
+use App\Enums\PhotoStatus;
 use App\Enums\RsvpStatus;
 use App\Models\Event;
 use App\Models\Guest;
@@ -25,6 +26,7 @@ class EventController extends Controller
             ->withCount([
                 'guests',
                 'guestbookEntries as pending_guestbook_count' => fn ($query) => $query->where('status', GuestbookStatus::Pending),
+                'photos as pending_photos_count' => fn ($query) => $query->where('status', PhotoStatus::Pending),
             ])
             ->orderBy('starts_at')
             ->get();
@@ -68,6 +70,7 @@ class EventController extends Controller
             'responded' => $guests->filter(fn (Guest $guest) => $guest->hasResponded())->count(),
             'coming' => (int) $guests->filter(fn (Guest $guest) => $guest->rsvp_status === RsvpStatus::Attending)->sum('rsvp_seats'),
             'guestbook_pending' => $event->guestbookEntries()->where('status', GuestbookStatus::Pending)->count(),
+            'photos_pending' => $event->photos()->where('status', PhotoStatus::Pending)->count(),
         ], $this->checkIns->counters($event));
 
         return view('events.show', ['event' => $event, 'stats' => $stats]);

@@ -2,7 +2,7 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 7 — Livre d'or
+## État : Phase 8 — Galerie photo modérée
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
@@ -29,6 +29,10 @@ Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invi
 - Lien WhatsApp pré-rempli par foyer (nom, événement, date, lieu, invitation) avec normalisation du numéro.
 - Livre d'or : les foyers signent depuis leur invitation ; chaque message est publié, masqué ou rejeté par les organisateurs avant d'apparaître aux invités.
 - Anti-spam du livre d'or : champ leurre et limitation à cinq dépôts par minute, compteurs de modération sur l'événement et le tableau de bord.
+- Galerie photo : les organisateurs déposent jusqu'à 10 photos JPEG ou PNG par envoi (10 Mo maximum chacune) ; chaque photo est publiée, masquée ou supprimée avant d'apparaître aux invités.
+- Photos stockées sur le disque privé, vignettes et versions web générées en tâche de fond, servies par URLs signées ; l'original n'est jamais public.
+- Galerie invitée par lien personnel (`/i/{jeton}/galerie`), paginée par 12, avec légende facultative et compteurs de photos à modérer côté organisateur.
+- Légendes modifiables photo par photo ; le rejet supprime définitivement le fichier et ses dérivés.
 - Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
@@ -55,7 +59,7 @@ Les secrets de développement sont déjà alignés entre `.env.example`, `compos
 
 Le QR d'entrée encode des URL absolues : en production, renseignez `APP_URL` avec le domaine HTTPS définitif avant de générer les invitations.
 
-Les reçus de réponse et les relances passent par la file d'attente `database`. En développement, lancez un worker dans un terminal dédié :
+Les reçus de réponse, les relances et la génération des dérivés photo passent par la file d'attente `database`. En développement, lancez un worker dans un terminal dédié :
 
 ```bash
 docker compose exec app php artisan queue:work
@@ -75,8 +79,8 @@ Les tests forcent SQLite en mémoire via `phpunit.xml`, même dans le conteneur 
 
 ```
 app/Http/Controllers/Auth/   inscription, connexion, réinitialisation
-app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or
-app/Jobs/                    envoi des e-mails de relance (file d'attente)
+app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or, galerie photo
+app/Jobs/                    envoi des e-mails de relance et génération des dérivés photo (file d'attente)
 app/Mail/                    reçu de réponse RSVP et relance (file d'attente)
 app/Models/                  modèles Eloquent
 app/Policies/                autorisations des événements
@@ -88,6 +92,7 @@ resources/js/map-picker.js   choix du repère sur la carte (Leaflet)
 resources/js/program-map.js  carte en lecture seule de la page programme
 resources/views/check-in/    page de scan et page directe de pointage
 resources/views/events/      création, édition et détail d'un événement
+resources/views/gallery/     galerie invitée et modération des photos
 resources/views/guestbook/   file de modération du livre d'or
 resources/views/invitations/ invitation publique, QR, formulaire RSVP et page programme
 resources/views/reminders/   page relances et confirmation de désinscription
@@ -99,7 +104,7 @@ compose.yaml                 app, MySQL, Mailpit, build des assets
 
 ## Prochaines étapes
 
-La Phase 8 couvre la galerie photo modérée. Voir [`specs/roadmap.md`](specs/roadmap.md).
+La Phase 9 couvre les cadeaux, la cagnotte et MoneyFusion. Voir [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 

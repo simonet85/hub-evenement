@@ -23,10 +23,15 @@
                     <p class="mt-1 text-caption text-ink-muted">Code vestimentaire : {{ $event->dress_code }}</p>
                 @endif
 
-                <div class="mt-5">
+                <div class="mt-5 flex flex-wrap gap-2">
                     <a href="{{ route('invitations.programme', $guest->invitation_token) }}" class="btn btn-secondary">
                         Programme et carte
                     </a>
+                    @if ($galleryCount > 0)
+                        <a href="{{ route('invitations.gallery', $guest->invitation_token) }}" class="btn btn-secondary">
+                            Galerie photo ({{ $galleryCount }})
+                        </a>
+                    @endif
                 </div>
 
                 <div class="mt-8 border-t border-line pt-6">

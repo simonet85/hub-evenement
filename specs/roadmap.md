@@ -48,9 +48,10 @@ Les phases sont volontairement petites : chacune est une tranche livrable, testa
 - **Fin** : un message n'apparaît qu'après validation de l'organisateur.
 
 ## Phase 8 — Galerie photo modérée
-- Envoi par les invités : type de fichier vérifié, taille maximale, stockage sur disque privé.
+- Uploader par les admins : type de fichier vérifié, taille maximale, stockage sur disque privé.
 - Vignettes générées en tâche de fond ; affichage par URLs signées.
 - File de modération et grille publique des photos approuvées.
+- Les photos approuvées seront visible publiquement sur le front par navigation sur l'onglet Galerie .
 - **Fin** : une photo envoyée est modérée, puis visible dans la galerie.
 
 ## Phase 9 — Cadeaux, cagnotte et MoneyFusion (J5)

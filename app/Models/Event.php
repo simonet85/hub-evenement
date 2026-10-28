@@ -80,6 +80,11 @@ class Event extends Model
         return $this->hasMany(GuestbookEntry::class);
     }
 
+    public function photos(): HasMany
+    {
+        return $this->hasMany(Photo::class);
+    }
+
     public function hasCoordinates(): bool
     {
         return $this->latitude !== null && $this->longitude !== null;

@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\CoOrganizerController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\GuestbookController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
@@ -19,6 +20,7 @@ Route::view('/', 'home')->name('home');
 
 Route::get('i/{token}', [InvitationController::class, 'show'])->name('invitations.show');
 Route::get('i/{token}/programme', [InvitationController::class, 'programme'])->name('invitations.programme');
+Route::get('i/{token}/galerie', [GalleryController::class, 'guest'])->name('invitations.gallery');
 Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
     ->middleware('throttle:20,1')
     ->name('invitations.rsvp');
@@ -26,6 +28,10 @@ Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
 Route::post('i/{token}/livre-dor', [GuestbookController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('guestbook.store');
+
+Route::get('galerie/photos/{photo}/{variant}', [GalleryController::class, 'serve'])
+    ->middleware('signed')
+    ->name('gallery.photo');
 
 Route::get('relances/desinscription/{guest}', [ReminderController::class, 'unsubscribeShow'])
     ->middleware('signed')
@@ -75,6 +81,14 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/livre-dor/{entry}/approuver', [GuestbookController::class, 'approve'])->name('guestbook.approve');
     Route::post('events/{event}/livre-dor/{entry}/masquer', [GuestbookController::class, 'hide'])->name('guestbook.hide');
     Route::post('events/{event}/livre-dor/{entry}/rejeter', [GuestbookController::class, 'reject'])->name('guestbook.reject');
+
+    Route::get('events/{event}/galerie', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::post('events/{event}/galerie', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::get('events/{event}/galerie/{photo}/apercu/{variant?}', [GalleryController::class, 'preview'])->name('gallery.preview');
+    Route::put('events/{event}/galerie/{photo}', [GalleryController::class, 'caption'])->name('gallery.caption');
+    Route::post('events/{event}/galerie/{photo}/approuver', [GalleryController::class, 'approve'])->name('gallery.approve');
+    Route::post('events/{event}/galerie/{photo}/masquer', [GalleryController::class, 'hide'])->name('gallery.hide');
+    Route::post('events/{event}/galerie/{photo}/rejeter', [GalleryController::class, 'reject'])->name('gallery.reject');
 
     Route::post('events/{event}/co-organizers', [CoOrganizerController::class, 'store'])->name('co-organizers.store');
     Route::delete('events/{event}/co-organizers/{user}', [CoOrganizerController::class, 'destroy'])->name('co-organizers.destroy');
