@@ -39,7 +39,7 @@
                     @endif
                 </div>
 
-                <div class="mt-8 border-t border-line pt-6">
+                <div class="mt-8 border-t border-line pt-6" data-reveal>
                     <p class="eyebrow">Invitation pour</p>
                     <p class="mt-1 font-display text-heading text-ink">{{ $guest->name }}</p>
                     <p class="text-caption text-ink-muted">
@@ -52,7 +52,7 @@
                     @endif
                 </div>
 
-                <section class="mt-8 border-t border-line pt-6 text-center" aria-labelledby="qr-title">
+                <section class="mt-8 border-t border-line pt-6 text-center" aria-labelledby="qr-title" data-reveal>
                     <p class="eyebrow">Votre QR d'entrée</p>
                     <h2 id="qr-title" class="mt-1 font-display text-heading text-ink">Présentez ce code à l'entrée</h2>
                     <img
@@ -79,7 +79,7 @@
                 @endif
 
                 @if ($guest->hasResponded())
-                    <section class="mt-8 border-t border-line pt-6" aria-labelledby="reponse-title">
+                    <section class="mt-8 border-t border-line pt-6" aria-labelledby="reponse-title" data-reveal>
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <h2 id="reponse-title" class="font-display text-heading text-ink">Votre réponse</h2>
                             <x-rsvp-status :guest="$guest" />
@@ -128,7 +128,7 @@
                 @endif
 
                 @if ($guest->canRespond())
-                    <section class="mt-8 border-t border-line pt-6" aria-labelledby="rsvp-title">
+                    <section class="mt-8 border-t border-line pt-6" aria-labelledby="rsvp-title" data-reveal>
                         <h2 id="rsvp-title" class="font-display text-heading text-ink">
                             {{ $guest->hasResponded() ? 'Modifier votre réponse' : 'Répondre à l’invitation' }}
                         </h2>
@@ -136,7 +136,7 @@
                         <form method="POST" action="{{ route('invitations.rsvp', $guest->invitation_token) }}" class="mt-4 space-y-5" data-rsvp-form>
                             @csrf
 
-                            <fieldset>
+                            <fieldset @error('rsvp_status') aria-describedby="rsvp_status-error" @enderror>
                                 <legend class="label">Serez-vous présent ?</legend>
                                 <div class="mt-2 space-y-2">
                                     <label for="rsvp_attending" class="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-sm border border-line-strong bg-surface-300 px-3 py-2">
@@ -146,6 +146,7 @@
                                             type="radio"
                                             value="attending"
                                             required
+                                            @error('rsvp_status') aria-invalid="true" @enderror
                                             @checked(old('rsvp_status', $guest->rsvp_status->value) === \App\Enums\RsvpStatus::Attending->value)
                                         >
                                         <span class="text-body text-ink">Oui, nous serons présents</span>
@@ -156,29 +157,36 @@
                                             name="rsvp_status"
                                             type="radio"
                                             value="declined"
+                                            @error('rsvp_status') aria-invalid="true" @enderror
                                             @checked(old('rsvp_status', $guest->rsvp_status->value) === \App\Enums\RsvpStatus::Declined->value)
                                         >
                                         <span class="text-body text-ink">Non, nous ne pourrons pas venir</span>
                                     </label>
                                 </div>
                                 @error('rsvp_status')
-                                    <p class="error-text mt-1">{{ $message }}</p>
+                                    <p id="rsvp_status-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                                 @enderror
                             </fieldset>
 
                             <div data-attendance-fields class="space-y-5">
                                 <div>
                                     <label for="rsvp_seats" class="label">Nombre de personnes</label>
-                                    <select id="rsvp_seats" name="rsvp_seats" class="field mt-1">
+                                    <select
+                                        id="rsvp_seats"
+                                        name="rsvp_seats"
+                                        class="field mt-1"
+                                        aria-describedby="{{ $errors->has('rsvp_seats') ? 'rsvp_seats-help rsvp_seats-error' : 'rsvp_seats-help' }}"
+                                        @error('rsvp_seats') aria-invalid="true" @enderror
+                                    >
                                         @for ($seats = 1; $seats <= $guest->allowed_seats; $seats++)
                                             <option value="{{ $seats }}" @selected((int) old('rsvp_seats', $guest->rsvp_seats ?? 1) === $seats)>
                                                 {{ $seats }} personne{{ $seats > 1 ? 's' : '' }}
                                             </option>
                                         @endfor
                                     </select>
-                                    <p class="help mt-1">Dans la limite des {{ $guest->allowed_seats }} places de votre foyer.</p>
+                                    <p id="rsvp_seats-help" class="help mt-1">Dans la limite des {{ $guest->allowed_seats }} places de votre foyer.</p>
                                     @error('rsvp_seats')
-                                        <p class="error-text mt-1">{{ $message }}</p>
+                                        <p id="rsvp_seats-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -186,10 +194,18 @@
                                     <label for="attendee_names" class="label">
                                         Prénoms des personnes <span class="font-normal text-ink-muted">(facultatif)</span>
                                     </label>
-                                    <textarea id="attendee_names" name="attendee_names" rows="3" maxlength="1000" class="field mt-1">{{ old('attendee_names', $guest->attendee_names) }}</textarea>
-                                    <p class="help mt-1">Un prénom par ligne, au plus le nombre de personnes indiqué.</p>
+                                    <textarea
+                                        id="attendee_names"
+                                        name="attendee_names"
+                                        rows="3"
+                                        maxlength="1000"
+                                        class="field mt-1"
+                                        aria-describedby="{{ $errors->has('attendee_names') ? 'attendee_names-help attendee_names-error' : 'attendee_names-help' }}"
+                                        @error('attendee_names') aria-invalid="true" @enderror
+                                    >{{ old('attendee_names', $guest->attendee_names) }}</textarea>
+                                    <p id="attendee_names-help" class="help mt-1">Un prénom par ligne, au plus le nombre de personnes indiqué.</p>
                                     @error('attendee_names')
-                                        <p class="error-text mt-1">{{ $message }}</p>
+                                        <p id="attendee_names-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
@@ -198,9 +214,17 @@
                                 <label for="dietary_notes" class="label">
                                     Régime alimentaire <span class="font-normal text-ink-muted">(facultatif)</span>
                                 </label>
-                                <textarea id="dietary_notes" name="dietary_notes" rows="2" maxlength="500" class="field mt-1" placeholder="Allergies, repas sans porc, végétarien…">{{ old('dietary_notes', $guest->dietary_notes) }}</textarea>
+                                <textarea
+                                    id="dietary_notes"
+                                    name="dietary_notes"
+                                    rows="2"
+                                    maxlength="500"
+                                    class="field mt-1"
+                                    placeholder="Allergies, repas sans porc, végétarien…"
+                                    @error('dietary_notes') aria-invalid="true" aria-describedby="dietary_notes-error" @enderror
+                                >{{ old('dietary_notes', $guest->dietary_notes) }}</textarea>
                                 @error('dietary_notes')
-                                    <p class="error-text mt-1">{{ $message }}</p>
+                                    <p id="dietary_notes-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -208,9 +232,16 @@
                                 <label for="rsvp_message" class="label">
                                     Un mot pour les organisateurs <span class="font-normal text-ink-muted">(facultatif)</span>
                                 </label>
-                                <textarea id="rsvp_message" name="rsvp_message" rows="3" maxlength="1000" class="field mt-1">{{ old('rsvp_message', $guest->rsvp_message) }}</textarea>
+                                <textarea
+                                    id="rsvp_message"
+                                    name="rsvp_message"
+                                    rows="3"
+                                    maxlength="1000"
+                                    class="field mt-1"
+                                    @error('rsvp_message') aria-invalid="true" aria-describedby="rsvp_message-error" @enderror
+                                >{{ old('rsvp_message', $guest->rsvp_message) }}</textarea>
                                 @error('rsvp_message')
-                                    <p class="error-text mt-1">{{ $message }}</p>
+                                    <p id="rsvp_message-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -225,7 +256,7 @@
                     </p>
                 @endif
 
-                <section id="livre-dor" class="mt-8 border-t border-line pt-6" aria-labelledby="livre-dor-title">
+                <section id="livre-dor" class="mt-8 border-t border-line pt-6" aria-labelledby="livre-dor-title" data-reveal>
                     <div class="flex flex-wrap items-end justify-between gap-2">
                         <div>
                             <p class="eyebrow">Livre d'or</p>
@@ -265,18 +296,38 @@
 
                         <div>
                             <label for="author_name" class="label">Votre nom</label>
-                            <input id="author_name" name="author_name" type="text" maxlength="80" required class="field mt-1" value="{{ old('author_name', $guest->name) }}">
+                            <input
+                                id="author_name"
+                                name="author_name"
+                                type="text"
+                                maxlength="80"
+                                required
+                                autocomplete="name"
+                                class="field mt-1"
+                                value="{{ old('author_name', $guest->name) }}"
+                                @error('author_name') aria-invalid="true" aria-describedby="author_name-error" @enderror
+                            >
                             @error('author_name')
-                                <p class="error-text mt-1">{{ $message }}</p>
+                                <p id="author_name-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
                             <label for="guestbook_message" class="label">Votre message</label>
-                            <textarea id="guestbook_message" name="message" rows="4" maxlength="1000" required class="field mt-1" placeholder="Félicitations, souvenir, vœu…">{{ old('message') }}</textarea>
-                            <p class="help mt-1">1 000 caractères maximum. Votre message sera visible après validation par les organisateurs.</p>
+                            <textarea
+                                id="guestbook_message"
+                                name="message"
+                                rows="4"
+                                maxlength="1000"
+                                required
+                                class="field mt-1"
+                                placeholder="Félicitations, souvenir, vœu…"
+                                aria-describedby="{{ $errors->has('message') ? 'guestbook_message-help guestbook_message-error' : 'guestbook_message-help' }}"
+                                @error('message') aria-invalid="true" @enderror
+                            >{{ old('message') }}</textarea>
+                            <p id="guestbook_message-help" class="help mt-1">1 000 caractères maximum. Votre message sera visible après validation par les organisateurs.</p>
                             @error('message')
-                                <p class="error-text mt-1">{{ $message }}</p>
+                                <p id="guestbook_message-error" class="error-text mt-1" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
 

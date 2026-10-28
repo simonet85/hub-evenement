@@ -2,7 +2,7 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 10 — Pilotage, exports et dossier traiteur
+## État : Phase 11 — Animations et accessibilité
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
@@ -51,6 +51,11 @@ Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invi
 - Exports couverts CSV/Excel réservés aux foyers présents, sans e-mail, téléphone, message privé ni jeton.
 - Lien traiteur signé, utilisable sans compte, valable 24 heures, 7 jours (par défaut) ou 30 jours ; les téléchargements reprennent la même expiration.
 - Portail traiteur non indexable et sans `Referer` ; un lien absent, altéré ou expiré renvoie 403.
+- Révélation progressive des sections de l'invitation et du programme, avec décalage par lot, désactivée sans JavaScript ou en mouvement réduit.
+- Formulaires invités : erreurs et aides reliées au champ (`aria-invalid`, `aria-describedby`, `role="alert"`), saisie mobile préparée (`autocomplete`, `inputmode`).
+- Carte du programme en région nommée et décrite, utilisable au clavier ; Leaflet et les tuiles ne sont chargés qu'à l'approche du viewport.
+- Galerie invitée en chargement paresseux (`loading="lazy"`, `decoding="async"`), ouverture dans une nouvelle fenêtre annoncée.
+- Lien d'évitement, contour de focus visible et cibles tactiles principales de 44 px minimum sur le parcours invité.
 - Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
@@ -129,6 +134,7 @@ resources/css/app.css        variables CSS + thème Tailwind 4
 resources/js/scanner.js      caméra et pointage (html5-qrcode)
 resources/js/map-picker.js   choix du repère sur la carte (Leaflet)
 resources/js/program-map.js  carte en lecture seule de la page programme
+resources/js/reveal.js       révélation progressive des sections (IntersectionObserver)
 resources/views/caterer/     portail traiteur signé en lecture seule
 resources/views/check-in/    page de scan et page directe de pointage
 resources/views/events/      création, édition et détail d'un événement
@@ -148,7 +154,7 @@ compose.yaml                 app, MySQL, Mailpit, build des assets
 
 ## Prochaines étapes
 
-La Phase 11 couvre les animations et l'accessibilité. Voir [`specs/roadmap.md`](specs/roadmap.md).
+La Phase 12 couvre le durcissement et la mise en ligne. Voir [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 

@@ -1038,6 +1038,33 @@
         animation-delay: var(--duration-base);
     }
 
+    html.reveal-enabled [data-reveal] {
+        transition-property: opacity, transform;
+        transition-duration: var(--duration-reveal);
+        transition-timing-function: var(--motion-ease-enter);
+        transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    html.reveal-enabled [data-reveal]:not([data-reveal-shown]) {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html.reveal-enabled [data-reveal] {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+    }
+
+    @media print {
+        [data-reveal] {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
     .sr-only-focusable:not(:focus):not(:focus-within) {
         position: absolute;
         width: 1px;

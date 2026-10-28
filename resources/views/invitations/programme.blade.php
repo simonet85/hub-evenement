@@ -21,7 +21,7 @@
                 </p>
                 <p class="mt-2 text-caption text-ink-muted">Programme pour {{ $guest->name }}</p>
 
-                <section class="mt-8 border-t border-line pt-6" aria-labelledby="programme-title">
+                <section class="mt-8 border-t border-line pt-6" aria-labelledby="programme-title" data-reveal>
                     <h2 id="programme-title" class="font-display text-heading text-ink">Programme</h2>
 
                     @if ($event->programSteps->isEmpty())
@@ -50,13 +50,13 @@
                 </section>
 
                 @if ($event->dress_code)
-                    <section class="mt-8 border-t border-line pt-6" aria-labelledby="tenue-title">
+                    <section class="mt-8 border-t border-line pt-6" aria-labelledby="tenue-title" data-reveal>
                         <h2 id="tenue-title" class="font-display text-heading text-ink">Code vestimentaire</h2>
                         <p class="mt-2 text-body text-ink">{{ $event->dress_code }}</p>
                     </section>
                 @endif
 
-                <section class="mt-8 border-t border-line pt-6" aria-labelledby="carte-title">
+                <section class="mt-8 border-t border-line pt-6" aria-labelledby="carte-title" data-reveal>
                     <h2 id="carte-title" class="font-display text-heading text-ink">Comment venir</h2>
                     <p class="mt-2 text-body text-ink">{{ $event->venue_name }}</p>
                     @if ($event->venue_address)
@@ -70,9 +70,14 @@
                             data-lng="{{ $event->longitude }}"
                             data-venue="{{ $event->venue_name }}"
                             class="mt-4 h-64 w-full rounded-sm border border-line bg-surface-300"
-                            role="application"
+                            role="region"
                             aria-label="Carte du lieu : {{ $event->venue_name }}"
+                            aria-describedby="carte-aide"
                         ></div>
+                        <p id="carte-aide" class="help mt-2">
+                            Carte interactive : utilisez les flèches pour vous déplacer et les boutons + et − pour zoomer.
+                            Les liens d'itinéraire ci-dessous ouvrent votre application de navigation.
+                        </p>
                         <noscript>
                             <p class="help mt-2">
                                 La carte interactive nécessite JavaScript. L'adresse et les liens d'itinéraire ci-dessous restent disponibles.

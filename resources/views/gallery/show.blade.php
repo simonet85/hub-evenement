@@ -39,8 +39,10 @@
                                             src="{{ URL::temporarySignedRoute('gallery.photo', now()->addMinutes(30), ['photo' => $photo, 'variant' => 'thumb']) }}"
                                             alt="{{ $photo->caption ?: 'Photo de l’événement '.$event->name }}"
                                             loading="lazy"
+                                            decoding="async"
                                             class="aspect-square w-full rounded-sm border border-line object-cover"
                                         >
+                                        <span class="sr-only"> (nouvelle fenêtre)</span>
                                     </a>
                                     @if ($photo->caption)
                                         <figcaption class="mt-2 text-caption text-ink-muted">{{ $photo->caption }}</figcaption>

@@ -8,8 +8,30 @@ if (document.querySelector('[data-map-picker]')) {
     import('./map-picker.js');
 }
 
-if (document.querySelector('[data-program-map]')) {
-    import('./program-map.js');
+if (document.querySelector('[data-reveal]')) {
+    import('./reveal.js');
+}
+
+const programMap = document.querySelector('[data-program-map]');
+
+if (programMap) {
+    const loadProgramMap = () => import('./program-map.js');
+
+    if ('IntersectionObserver' in window) {
+        const mapObserver = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    mapObserver.disconnect();
+                    loadProgramMap();
+                }
+            },
+            { rootMargin: '200px 0px' },
+        );
+
+        mapObserver.observe(programMap);
+    } else {
+        loadProgramMap();
+    }
 }
 
 const rsvpForm = document.querySelector('[data-rsvp-form]');

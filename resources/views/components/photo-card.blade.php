@@ -12,8 +12,10 @@
                 src="{{ route('gallery.preview', [$event, $photo]) }}"
                 alt="{{ $photo->caption ?: $photo->original_name }}"
                 loading="lazy"
+                decoding="async"
                 class="aspect-square w-full rounded-sm border border-line object-cover"
             >
+            <span class="sr-only"> (nouvelle fenêtre)</span>
         </a>
 
         <div class="min-w-0">

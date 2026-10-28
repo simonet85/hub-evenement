@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fbf6ee">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
     <meta name="referrer" content="no-referrer">
@@ -28,7 +29,7 @@
         </div>
     </header>
 
-    <main id="contenu" class="flex-1">
+    <main id="contenu" class="flex-1" tabindex="-1">
         <div class="mx-auto @yield('container', 'max-w-2xl') px-4 py-8 sm:py-12">
             @if (session('status'))
                 <x-alert tone="success" class="mb-4">{{ session('status') }}</x-alert>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fbf6ee">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="referrer" content="no-referrer">
     <title>@yield('title', config('app.name', 'Hub Événement'))</title>
@@ -49,7 +50,7 @@
         </div>
     </header>
 
-    <main id="contenu" class="flex-1">
+    <main id="contenu" class="flex-1" tabindex="-1">
         @if (session('status') || session('error'))
             <div class="mx-auto max-w-5xl space-y-3 px-4 pt-6">
                 @if (session('status'))

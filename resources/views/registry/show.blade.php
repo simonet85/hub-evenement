@@ -86,6 +86,8 @@
                                     type="tel"
                                     required
                                     maxlength="30"
+                                    autocomplete="tel"
+                                    inputmode="tel"
                                     value="{{ old('phone', $guest->phone) }}"
                                     placeholder="+225 07 00 00 00 00"
                                     class="field mt-1"
@@ -208,6 +210,8 @@
                                                     type="tel"
                                                     required
                                                     maxlength="30"
+                                                    autocomplete="tel"
+                                                    inputmode="tel"
                                                     value="{{ old('phone', $guest->phone) }}"
                                                     placeholder="+225 07 00 00 00 00"
                                                     class="field mt-1"
