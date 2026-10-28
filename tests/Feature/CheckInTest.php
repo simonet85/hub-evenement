@@ -15,7 +15,12 @@ it('génère un jeton d’entrée unique et distinct du jeton d’invitation', f
 });
 
 it('affiche le QR code dans l’invitation du foyer', function () {
-    $guest = Guest::factory()->create(['name' => 'Famille Koné']);
+    $guest = Guest::factory()->create([
+        'name' => 'Famille Koné',
+        'rsvp_status' => RsvpStatus::Attending,
+        'rsvp_seats' => 2,
+        'rsvp_responded_at' => now(),
+    ]);
 
     $this->get(route('invitations.show', $guest->invitation_token))
         ->assertOk()
@@ -23,6 +28,17 @@ it('affiche le QR code dans l’invitation du foyer', function () {
         ->assertSee('data:image/svg+xml;base64,', false)
         ->assertSee('Télécharger le QR')
         ->assertSee("alt=\"QR code d'entrée pour Famille Koné\"", false);
+});
+
+it('ne montre pas le QR avant la confirmation du foyer', function () {
+    $guest = Guest::factory()->create(['name' => 'Famille Bamba']);
+
+    $this->get(route('invitations.show', $guest->invitation_token))
+        ->assertOk()
+        ->assertDontSee("Présentez ce code à l'entrée", false)
+        ->assertDontSee('data:image/svg+xml;base64,', false)
+        ->assertSee("Votre QR d'entrée apparaîtra dès que vous aurez confirmé votre présence.", false)
+        ->assertSee('Répondre à l’invitation');
 });
 
 it('télécharge le QR SVG du foyer pour un organisateur ou un co-organisateur', function () {

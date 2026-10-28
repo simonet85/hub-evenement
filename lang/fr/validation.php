@@ -34,5 +34,10 @@ return [
         'email' => 'adresse e-mail',
         'password' => 'mot de passe',
         'password_confirmation' => 'confirmation du mot de passe',
+        'rsvp_status' => 'réponse',
+        'rsvp_seats' => 'nombre de personnes',
+        'attendee_names' => 'prénoms',
+        'dietary_notes' => 'régime alimentaire',
+        'rsvp_message' => 'message',
     ],
 ];

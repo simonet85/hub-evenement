@@ -27,7 +27,9 @@ class InvitationController extends Controller
         return view('invitations.show', [
             'guest' => $guest,
             'event' => $guest->event,
-            'qrCode' => $qrCodes->dataUri($guest),
+            'qrCode' => $guest->hasResponded() && $guest->rsvp_status === RsvpStatus::Attending
+                ? $qrCodes->dataUri($guest)
+                : null,
             'guestbookEntries' => $guestbookEntries,
             'galleryCount' => $guest->event->photos()->approved()->count(),
             'hasRegistry' => $guest->event->hasRegistry(),
@@ -64,6 +66,10 @@ class InvitationController extends Controller
             'attendee_names' => ['nullable', 'string', 'max:1000'],
             'dietary_notes' => ['nullable', 'string', 'max:500'],
             'rsvp_message' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'rsvp_status.required' => 'Indiquez si vous serez présent.',
+            'rsvp_seats.required_if' => 'Indiquez le nombre de personnes.',
+            'rsvp_seats.max' => 'Choisissez au plus '.$guest->allowed_seats.' personne'.($guest->allowed_seats > 1 ? 's' : '').' pour ce foyer.',
         ]);
 
         $attending = $validated['rsvp_status'] === RsvpStatus::Attending->value;
@@ -72,7 +78,7 @@ class InvitationController extends Controller
 
         if ($seats !== null && count($names) > $seats) {
             throw ValidationException::withMessages([
-                'attendee_names' => 'Indiquez au plus '.$seats.' prénom(s) pour ce foyer.',
+                'attendee_names' => 'Indiquez au plus '.$seats.' prénom'.($seats > 1 ? 's' : '').' pour ce foyer.',
             ]);
         }
 
@@ -82,7 +88,7 @@ class InvitationController extends Controller
             'rsvp_status' => $validated['rsvp_status'],
             'rsvp_seats' => $seats,
             'attendee_names' => $names === [] ? null : implode("\n", $names),
-            'dietary_notes' => $validated['dietary_notes'] ?? null,
+            'dietary_notes' => $attending ? ($validated['dietary_notes'] ?? null) : null,
             'rsvp_message' => $validated['rsvp_message'] ?? null,
             'rsvp_responded_at' => now(),
             'rsvp_is_late' => $late,

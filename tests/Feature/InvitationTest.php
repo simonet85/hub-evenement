@@ -33,6 +33,21 @@ it('renvoie 404 pour un jeton inconnu', function () {
     $this->get('/i/jeton-inconnu')->assertNotFound();
 });
 
+it('replie la modification de réponse une fois la réponse enregistrée', function () {
+    $guest = Guest::factory()->create([
+        'rsvp_status' => RsvpStatus::Attending,
+        'rsvp_seats' => 2,
+        'rsvp_responded_at' => now(),
+    ]);
+
+    $this->get(route('invitations.show', $guest->invitation_token))
+        ->assertOk()
+        ->assertSee('<details', false)
+        ->assertSee('Modifier votre réponse')
+        ->assertSee('Enregistrer ma réponse')
+        ->assertDontSee('Répondre à l’invitation');
+});
+
 it('régénère le lien et révoque l’ancien', function () {
     $owner = User::factory()->create();
     $event = Event::factory()->create(['user_id' => $owner->id]);
@@ -124,6 +139,7 @@ it('enregistre une absence sans places ni prénoms', function () {
         'rsvp_status' => 'declined',
         'rsvp_seats' => 2,
         'attendee_names' => 'Awa',
+        'dietary_notes' => 'Végétarien',
     ])
         ->assertRedirect()
         ->assertSessionHasNoErrors();
@@ -132,7 +148,8 @@ it('enregistre une absence sans places ni prénoms', function () {
 
     expect($guest->rsvp_status)->toBe(RsvpStatus::Declined)
         ->and($guest->rsvp_seats)->toBeNull()
-        ->and($guest->attendee_names)->toBeNull();
+        ->and($guest->attendee_names)->toBeNull()
+        ->and($guest->dietary_notes)->toBeNull();
 
     Mail::assertNothingQueued();
 });
