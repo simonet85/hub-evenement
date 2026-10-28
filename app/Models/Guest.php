@@ -61,6 +61,11 @@ class Guest extends Model
         return $this->hasMany(Reminder::class);
     }
 
+    public function contributions(): HasMany
+    {
+        return $this->hasMany(Contribution::class);
+    }
+
     public function checkedInBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'checked_in_by');

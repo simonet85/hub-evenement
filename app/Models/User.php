@@ -40,6 +40,16 @@ class User extends Authenticatable
         return $this->hasMany(Event::class);
     }
 
+    public function reconciledContributions(): HasMany
+    {
+        return $this->hasMany(Contribution::class, 'reconciled_by');
+    }
+
+    public function refundedContributions(): HasMany
+    {
+        return $this->hasMany(Contribution::class, 'refunded_by');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

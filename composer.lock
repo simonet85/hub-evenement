@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4ad1538a7dab29f83cd7c1b8beac0fe",
+    "content-hash": "e7a4529128061ada28aa97c81a5fc07e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3701,6 +3701,70 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.4"
             },
             "time": "2026-09-16T11:39:30+00:00"
+        },
+        {
+            "name": "simonet85/laravel-moneyfusion",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simonet85/laravel-moneyfusion.git",
+                "reference": "7f30ceb54b7c289b65853374724c6a1d645259c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simonet85/laravel-moneyfusion/zipball/7f30ceb54b7c289b65853374724c6a1d645259c1",
+                "reference": "7f30ceb54b7c289b65853374724c6a1d645259c1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/http": "^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/support": "^9.0|^10.0|^11.0|^12.0|^13.0",
+                "php": "^8.1|^8.2|^8.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0",
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "MoneyFusion": "Simonet85\\LaravelMoneyFusion\\Facades\\MoneyFusion"
+                    },
+                    "providers": [
+                        "Simonet85\\LaravelMoneyFusion\\MoneyFusionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Simonet85\\LaravelMoneyFusion\\": "src/",
+                    "Simonet85\\LaravelMoneyFusion\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simonet",
+                    "email": "christian.85@live.fr"
+                }
+            ],
+            "description": "Laravel package for MoneyFusion payment integration",
+            "keywords": [
+                "laravel",
+                "moneyfusion",
+                "payment",
+                "payment-gateway"
+            ],
+            "support": {
+                "issues": "https://github.com/simonet85/laravel-moneyfusion/issues",
+                "source": "https://github.com/simonet85/laravel-moneyfusion/tree/v1.1.1"
+            },
+            "time": "2026-10-22T10:36:01+00:00"
         },
         {
             "name": "symfony/clock",

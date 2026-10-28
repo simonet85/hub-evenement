@@ -23,6 +23,9 @@ class Event extends Model
         'latitude',
         'longitude',
         'rsvp_deadline',
+        'cagnotte_enabled',
+        'cagnotte_goal',
+        'cagnotte_message',
     ];
 
     protected function casts(): array
@@ -33,6 +36,8 @@ class Event extends Model
             'rsvp_deadline' => 'date',
             'latitude' => 'float',
             'longitude' => 'float',
+            'cagnotte_enabled' => 'boolean',
+            'cagnotte_goal' => 'integer',
         ];
     }
 
@@ -83,6 +88,21 @@ class Event extends Model
     public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);
+    }
+
+    public function gifts(): HasMany
+    {
+        return $this->hasMany(Gift::class);
+    }
+
+    public function contributions(): HasMany
+    {
+        return $this->hasMany(Contribution::class);
+    }
+
+    public function hasRegistry(): bool
+    {
+        return $this->cagnotte_enabled || $this->gifts()->where('is_active', true)->exists();
     }
 
     public function hasCoordinates(): bool

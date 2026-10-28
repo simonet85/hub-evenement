@@ -32,6 +32,11 @@
                             Galerie photo ({{ $galleryCount }})
                         </a>
                     @endif
+                    @if ($hasRegistry)
+                        <a href="{{ route('invitations.registry', $guest->invitation_token) }}" class="btn btn-secondary">
+                            Cadeaux et cagnotte
+                        </a>
+                    @endif
                 </div>
 
                 <div class="mt-8 border-t border-line pt-6">

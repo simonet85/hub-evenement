@@ -27,6 +27,7 @@ class EventController extends Controller
                 'guests',
                 'guestbookEntries as pending_guestbook_count' => fn ($query) => $query->where('status', GuestbookStatus::Pending),
                 'photos as pending_photos_count' => fn ($query) => $query->where('status', PhotoStatus::Pending),
+                'contributions as pending_contributions_count' => fn ($query) => $query->pendingActive(),
             ])
             ->orderBy('starts_at')
             ->get();
@@ -71,6 +72,7 @@ class EventController extends Controller
             'coming' => (int) $guests->filter(fn (Guest $guest) => $guest->rsvp_status === RsvpStatus::Attending)->sum('rsvp_seats'),
             'guestbook_pending' => $event->guestbookEntries()->where('status', GuestbookStatus::Pending)->count(),
             'photos_pending' => $event->photos()->where('status', PhotoStatus::Pending)->count(),
+            'contributions_pending' => $event->contributions()->pendingActive()->count(),
         ], $this->checkIns->counters($event));
 
         return view('events.show', ['event' => $event, 'stats' => $stats]);

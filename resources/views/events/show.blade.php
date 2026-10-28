@@ -50,6 +50,9 @@
                 <a href="{{ route('gallery.index', $event) }}" class="btn btn-secondary">
                     Galerie photo{{ $stats['photos_pending'] > 0 ? ' ('.$stats['photos_pending'].')' : '' }}
                 </a>
+                <a href="{{ route('registry.index', $event) }}" class="btn btn-secondary">
+                    Cadeaux et cagnotte{{ $stats['contributions_pending'] > 0 ? ' ('.$stats['contributions_pending'].')' : '' }}
+                </a>
                 @can('update', $event)
                     <a href="{{ route('events.edit', $event) }}" class="btn btn-secondary">
                         Modifier l'événement

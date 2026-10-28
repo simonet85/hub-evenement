@@ -30,6 +30,7 @@ class InvitationController extends Controller
             'qrCode' => $qrCodes->dataUri($guest),
             'guestbookEntries' => $guestbookEntries,
             'galleryCount' => $guest->event->photos()->approved()->count(),
+            'hasRegistry' => $guest->event->hasRegistry(),
         ]);
     }
 

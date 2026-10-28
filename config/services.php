@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'moneyfusion' => [
+        // `fake` : page de paiement simulée en local. `http` : appel réel à MoneyFusion.
+        'driver' => env('MONEYFUSION_DRIVER', 'fake'),
+        'return_ttl_hours' => 24,
+        'webhook_ttl_days' => 7,
+    ],
+
 ];

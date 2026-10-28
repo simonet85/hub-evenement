@@ -8,12 +8,16 @@ use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\CoOrganizerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestbookController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProgramStepController;
+use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\ReminderController;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -21,6 +25,13 @@ Route::view('/', 'home')->name('home');
 Route::get('i/{token}', [InvitationController::class, 'show'])->name('invitations.show');
 Route::get('i/{token}/programme', [InvitationController::class, 'programme'])->name('invitations.programme');
 Route::get('i/{token}/galerie', [GalleryController::class, 'guest'])->name('invitations.gallery');
+Route::get('i/{token}/cadeaux', [RegistryController::class, 'show'])->name('invitations.registry');
+Route::post('i/{token}/cagnotte', [RegistryController::class, 'storeCagnotte'])
+    ->middleware('throttle:10,1')
+    ->name('contributions.cagnotte');
+Route::post('i/{token}/cadeaux/{gift}', [RegistryController::class, 'storeGift'])
+    ->middleware('throttle:10,1')
+    ->name('contributions.gift');
 Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
     ->middleware('throttle:20,1')
     ->name('invitations.rsvp');
@@ -32,6 +43,18 @@ Route::post('i/{token}/livre-dor', [GuestbookController::class, 'store'])
 Route::get('galerie/photos/{photo}/{variant}', [GalleryController::class, 'serve'])
     ->middleware('signed')
     ->name('gallery.photo');
+
+Route::get('paiements/retour/{contribution}', [PaymentController::class, 'show'])
+    ->middleware('signed')
+    ->name('payments.return');
+Route::post('paiements/webhook/{contribution}', [PaymentController::class, 'webhook'])
+    ->middleware('signed')
+    ->withoutMiddleware(ValidateCsrfToken::class)
+    ->name('payments.webhook');
+Route::get('paiement-simule/{token}', [PaymentController::class, 'simulator'])
+    ->name('payments.simulator');
+Route::post('paiement-simule/{token}', [PaymentController::class, 'simulate'])
+    ->name('payments.simulator.complete');
 
 Route::get('relances/desinscription/{guest}', [ReminderController::class, 'unsubscribeShow'])
     ->middleware('signed')
@@ -89,6 +112,12 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/galerie/{photo}/approuver', [GalleryController::class, 'approve'])->name('gallery.approve');
     Route::post('events/{event}/galerie/{photo}/masquer', [GalleryController::class, 'hide'])->name('gallery.hide');
     Route::post('events/{event}/galerie/{photo}/rejeter', [GalleryController::class, 'reject'])->name('gallery.reject');
+
+    Route::get('events/{event}/cadeaux', [GiftController::class, 'index'])->name('registry.index');
+    Route::post('events/{event}/cadeaux', [GiftController::class, 'storeGift'])->name('gifts.store');
+    Route::put('events/{event}/cadeaux/{gift}', [GiftController::class, 'updateGift'])->name('gifts.update');
+    Route::put('events/{event}/cagnotte', [GiftController::class, 'updateCagnotte'])->name('cagnotte.update');
+    Route::post('events/{event}/contributions/{contribution}/journal', [GiftController::class, 'reconcile'])->name('contributions.reconcile');
 
     Route::post('events/{event}/co-organizers', [CoOrganizerController::class, 'store'])->name('co-organizers.store');
     Route::delete('events/{event}/co-organizers/{user}', [CoOrganizerController::class, 'destroy'])->name('co-organizers.destroy');

@@ -2,7 +2,7 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 8 — Galerie photo modérée
+## État : Phase 9 — Cadeaux, cagnotte et MoneyFusion
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
@@ -33,6 +33,17 @@ Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invi
 - Photos stockées sur le disque privé, vignettes et versions web générées en tâche de fond, servies par URLs signées ; l'original n'est jamais public.
 - Galerie invitée par lien personnel (`/i/{jeton}/galerie`), paginée par 12, avec légende facultative et compteurs de photos à modérer côté organisateur.
 - Légendes modifiables photo par photo ; le rejet supprime définitivement le fichier et ses dérivés.
+- Liste de cadeaux gérée par le propriétaire et les co-organisateurs : nom, description, prix unitaire et quantité.
+- Réservation d'un ou plusieurs exemplaires, ou participation libre dans la limite du montant restant ; le montant d'une réservation est toujours recalculé côté serveur.
+- Disponibilité d'un cadeau = total − paiements confirmés − paiements en attente non expirés ; les remboursements libèrent la place.
+- Cagnotte facultative avec objectif, message d'accueil, montants suggérés (5 000 à 50 000 FCFA) et montant libre ; contribution anonyme possible.
+- Page invité « Cadeaux et cagnotte » (`/i/{jeton}/cadeaux`), accessible depuis l'invitation, non indexable.
+- Paiements MoneyFusion via le paquet officiel `simonet85/laravel-moneyfusion` : redirection, page de retour signée et webhook signé idempotent.
+- Le statut n'est jamais accepté tel quel : il est revérifié côté serveur, et un montant différent de celui attendu n'est jamais crédité.
+- Mode `fake` par défaut en local : une page de simulation remplace MoneyFusion, sans clé ni débit réel ; `http` active l'appel réel en production.
+- Journal des paiements : référence, token, statut, note, remboursement manuel avec note obligatoire et encaissement hors ligne d'un paiement échoué.
+- Expiration automatique des paiements en attente après deux heures ; les contributions en attente retiennent leur montant jusqu'à expiration.
+- Compteurs de paiements en attente sur l'événement et le tableau de bord ; seuls les paiements confirmés comptent dans les totaux.
 - Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
@@ -59,11 +70,29 @@ Les secrets de développement sont déjà alignés entre `.env.example`, `compos
 
 Le QR d'entrée encode des URL absolues : en production, renseignez `APP_URL` avec le domaine HTTPS définitif avant de générer les invitations.
 
+### Paiements MoneyFusion
+
+En développement, `MONEYFUSION_DRIVER=fake` (valeur par défaut) affiche une page de simulation locale : aucun paiement n'est débité et aucune clé n'est nécessaire.
+
+Pour activer l'appel réel, renseignez dans `.env` :
+
+```dotenv
+MONEYFUSION_DRIVER=http
+MONEYFUSION_API_URL=https://api.moneyfusion.net/api/create-payment
+MONEYFUSION_APP_KEY=votre-cle
+MONEYFUSION_CHECK_PAYMENT_URL=https://pay.moneyfusion.net/paiementNotif
+MONEYFUSION_ROUTES_ENABLED=false
+```
+
+L'application fournit ses propres routes de retour et de webhook signées ; les routes du paquet restent désactivées (`MONEYFUSION_ROUTES_ENABLED=false`). MoneyFusion ne signe pas ses notifications : le montant et le statut sont donc toujours revérifiés auprès du fournisseur avant crédit.
+
 Les reçus de réponse, les relances et la génération des dérivés photo passent par la file d'attente `database`. En développement, lancez un worker dans un terminal dédié :
 
 ```bash
 docker compose exec app php artisan queue:work
 ```
+
+L'expiration des paiements en attente est planifiée toutes les cinq minutes. En développement : `docker compose exec app php artisan schedule:work`. En production, un cron appelle `php artisan schedule:run` chaque minute.
 
 En production, un cron exécute `php artisan queue:work --stop-when-empty` ou un superviseur équivalent. Un seul worker traite la file : les e-mails d'un lot de relances partent l'un après l'autre.
 
@@ -79,12 +108,14 @@ Les tests forcent SQLite en mémoire via `phpunit.xml`, même dans le conteneur 
 
 ```
 app/Http/Controllers/Auth/   inscription, connexion, réinitialisation
-app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or, galerie photo
+app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or, galerie photo, cadeaux et paiements
+app/Enums/                   statuts et types de contribution
 app/Jobs/                    envoi des e-mails de relance et génération des dérivés photo (file d'attente)
 app/Mail/                    reçu de réponse RSVP et relance (file d'attente)
 app/Models/                  modèles Eloquent
 app/Policies/                autorisations des événements
-app/Services/                import CSV, QR d'entrée, pointage et compteurs
+app/Services/                import CSV, QR d'entrée, pointage, compteurs, contributions
+app/Services/MoneyFusion/    passerelle réelle (paquet) et simulateur local
 design-system/tokens.json    source de vérité des jetons
 resources/css/app.css        variables CSS + thème Tailwind 4
 resources/js/scanner.js      caméra et pointage (html5-qrcode)
@@ -95,6 +126,8 @@ resources/views/events/      création, édition et détail d'un événement
 resources/views/gallery/     galerie invitée et modération des photos
 resources/views/guestbook/   file de modération du livre d'or
 resources/views/invitations/ invitation publique, QR, formulaire RSVP et page programme
+resources/views/payments/    simulateur local et page de retour signée
+resources/views/registry/    page invité cadeaux et cagnotte, journal organisateur
 resources/views/reminders/   page relances et confirmation de désinscription
 resources/views/mail/        reçus et relances e-mail
 specs/                       mission, tech-stack, roadmap, spécifications de phase
@@ -104,7 +137,7 @@ compose.yaml                 app, MySQL, Mailpit, build des assets
 
 ## Prochaines étapes
 
-La Phase 9 couvre les cadeaux, la cagnotte et MoneyFusion. Voir [`specs/roadmap.md`](specs/roadmap.md).
+La Phase 10 couvre le tableau de bord, les exports traiteur et le lien de lecture seule. Voir [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 
