@@ -5,7 +5,7 @@
         <p class="text-caption text-ink-muted">
             {{ $entry->author_name }}{{ $entry->author_name !== $entry->guest->name ? ' · foyer '.$entry->guest->name : '' }}
         </p>
-        <span class="status-pill status-pill-{{ $entry->status->tone() }}">{{ $entry->status->label() }}</span>
+        <x-status-pill :tone="$entry->status->tone()" :icon="$entry->status === \App\Enums\GuestbookStatus::Pending ? 'clock' : null">{{ $entry->status->label() }}</x-status-pill>
     </div>
 
     <p class="mt-3 whitespace-pre-line text-body text-ink">{{ $entry->message }}</p>

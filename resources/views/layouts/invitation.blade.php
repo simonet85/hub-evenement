@@ -15,9 +15,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="flex min-h-screen flex-col bg-surface-100 text-ink">
+    <a href="#contenu" class="sr-only-focusable absolute left-4 top-4 z-50 bg-surface px-4 py-2 text-label text-foreground">
+        Aller au contenu
+    </a>
+
     <header class="border-b border-line">
         <div class="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
-            <a href="{{ route('home') }}" class="font-display text-xl text-ink">
+            <a href="{{ route('home') }}" class="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap font-display text-xl text-ink">
                 Hub Événement
             </a>
             <span class="eyebrow">Invitation privée</span>
@@ -27,7 +31,7 @@
     <main id="contenu" class="flex-1">
         <div class="mx-auto max-w-2xl px-4 py-8 sm:py-12">
             @if (session('status'))
-                <p class="card mb-4 p-4 text-caption text-success" role="status">{{ session('status') }}</p>
+                <x-alert tone="success" class="mb-4">{{ session('status') }}</x-alert>
             @endif
 
             @yield('content')

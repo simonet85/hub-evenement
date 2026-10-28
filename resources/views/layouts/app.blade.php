@@ -16,29 +16,29 @@
     @stack('head')
 </head>
 <body class="flex min-h-screen flex-col bg-surface-100 text-ink">
-    <a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-surface-200 focus:px-4 focus:py-2 focus:text-label focus:text-ink">
+    <a href="#contenu" class="sr-only-focusable absolute left-4 top-4 z-50 bg-surface px-4 py-2 text-label text-foreground">
         Aller au contenu
     </a>
 
     <header class="border-b border-line">
         <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-            <a href="{{ route('home') }}" class="font-display text-xl text-ink">
+            <a href="{{ route('home') }}" class="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap font-display text-xl text-ink">
                 Hub Événement
             </a>
 
-            <nav class="flex items-center gap-4" aria-label="Navigation principale">
+            <nav class="ms-auto flex items-center gap-4" aria-label="Navigation principale">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="text-label text-ink-muted hover:text-ink">
+                    <a href="{{ route('dashboard') }}" class="inline-flex min-h-11 items-center text-label text-ink-muted hover:text-ink">
                         Mon espace
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="text-label text-ink-muted hover:text-ink">
+                        <button type="submit" class="inline-flex min-h-11 items-center text-label text-ink-muted hover:text-ink">
                             Se déconnecter
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="text-label text-ink-muted hover:text-ink">
+                    <a href="{{ route('login') }}" class="inline-flex min-h-11 items-center text-label text-ink-muted hover:text-ink">
                         Se connecter
                     </a>
                     <a href="{{ route('register') }}" class="btn btn-primary">
@@ -51,12 +51,12 @@
 
     <main id="contenu" class="flex-1">
         @if (session('status') || session('error'))
-            <div class="mx-auto max-w-5xl px-4 pt-6">
+            <div class="mx-auto max-w-5xl space-y-3 px-4 pt-6">
                 @if (session('status'))
-                    <p class="card p-4 text-caption text-success" role="status">{{ session('status') }}</p>
+                    <x-alert tone="success">{{ session('status') }}</x-alert>
                 @endif
                 @if (session('error'))
-                    <p class="card p-4 text-caption text-danger" role="alert">{{ session('error') }}</p>
+                    <x-alert tone="danger">{{ session('error') }}</x-alert>
                 @endif
             </div>
         @endif
