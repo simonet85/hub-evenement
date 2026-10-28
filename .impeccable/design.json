@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T16:41:17.871Z",
+  "title": "Design System: Hub Événement",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Crème de papier",
+        "canonical": "#fbf6ee",
+        "darkValue": "#1d1711",
+        "tonalRamp": [
+          "oklch(15% 0.004 79.8)",
+          "oklch(25% 0.007 79.8)",
+          "oklch(35% 0.010 79.8)",
+          "oklch(50% 0.012 79.8)",
+          "oklch(62% 0.012 79.8)",
+          "oklch(74% 0.011 79.8)",
+          "oklch(85% 0.008 79.8)",
+          "oklch(95% 0.004 79.8)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Papier ivoire",
+        "canonical": "#f3ebdd",
+        "darkValue": "#272019",
+        "tonalRamp": [
+          "oklch(15% 0.007 81.8)",
+          "oklch(25% 0.012 81.8)",
+          "oklch(35% 0.017 81.8)",
+          "oklch(50% 0.021 81.8)",
+          "oklch(62% 0.021 81.8)",
+          "oklch(74% 0.018 81.8)",
+          "oklch(85% 0.013 81.8)",
+          "oklch(95% 0.007 81.8)"
+        ]
+      },
+      "surface-muted": {
+        "role": "neutral",
+        "displayName": "Carton patiné",
+        "canonical": "#e8dcc8",
+        "darkValue": "#332a21",
+        "tonalRamp": [
+          "oklch(15% 0.010 80.7)",
+          "oklch(25% 0.018 80.7)",
+          "oklch(35% 0.025 80.7)",
+          "oklch(50% 0.030 80.7)",
+          "oklch(62% 0.030 80.7)",
+          "oklch(74% 0.027 80.7)",
+          "oklch(85% 0.019 80.7)",
+          "oklch(95% 0.010 80.7)"
+        ]
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Encre chaude",
+        "canonical": "#2a1f17",
+        "darkValue": "#f4ece0",
+        "tonalRamp": [
+          "oklch(15% 0.008 57.5)",
+          "oklch(25% 0.013 57.5)",
+          "oklch(35% 0.019 57.5)",
+          "oklch(50% 0.022 57.5)",
+          "oklch(62% 0.022 57.5)",
+          "oklch(74% 0.020 57.5)",
+          "oklch(85% 0.015 57.5)",
+          "oklch(95% 0.008 57.5)"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Encre délavée",
+        "canonical": "#66554a",
+        "darkValue": "#c4b5a3",
+        "tonalRamp": [
+          "oklch(15% 0.010 54.8)",
+          "oklch(25% 0.017 54.8)",
+          "oklch(35% 0.024 54.8)",
+          "oklch(50% 0.028 54.8)",
+          "oklch(62% 0.028 54.8)",
+          "oklch(74% 0.026 54.8)",
+          "oklch(85% 0.019 54.8)",
+          "oklch(95% 0.010 54.8)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Filet de lin",
+        "canonical": "#d9c9b0",
+        "darkValue": "#3f352a",
+        "tonalRamp": [
+          "oklch(15% 0.013 79.1)",
+          "oklch(25% 0.023 79.1)",
+          "oklch(35% 0.032 79.1)",
+          "oklch(50% 0.038 79.1)",
+          "oklch(62% 0.038 79.1)",
+          "oklch(74% 0.034 79.1)",
+          "oklch(85% 0.025 79.1)",
+          "oklch(95% 0.013 79.1)"
+        ]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "Trait de plume",
+        "canonical": "#8a7560",
+        "darkValue": "#8c7a68",
+        "tonalRamp": [
+          "oklch(15% 0.014 66.9)",
+          "oklch(25% 0.024 66.9)",
+          "oklch(35% 0.034 66.9)",
+          "oklch(50% 0.041 66.9)",
+          "oklch(62% 0.041 66.9)",
+          "oklch(74% 0.036 66.9)",
+          "oklch(85% 0.026 66.9)",
+          "oklch(95% 0.014 66.9)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Sauge de mariage",
+        "canonical": "#4e6b48",
+        "darkValue": "#a4c19c",
+        "tonalRamp": [
+          "oklch(15% 0.022 140.2)",
+          "oklch(25% 0.038 140.2)",
+          "oklch(35% 0.054 140.2)",
+          "oklch(50% 0.064 140.2)",
+          "oklch(62% 0.064 140.2)",
+          "oklch(74% 0.058 140.2)",
+          "oklch(85% 0.042 140.2)",
+          "oklch(95% 0.022 140.2)"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Sauge profonde",
+        "canonical": "#445e3f",
+        "darkValue": "#b3ccab",
+        "tonalRamp": [
+          "oklch(15% 0.020 140.5)",
+          "oklch(25% 0.035 140.5)",
+          "oklch(35% 0.050 140.5)",
+          "oklch(50% 0.058 140.5)",
+          "oklch(62% 0.058 140.5)",
+          "oklch(74% 0.052 140.5)",
+          "oklch(85% 0.038 140.5)",
+          "oklch(95% 0.020 140.5)"
+        ]
+      },
+      "primary-active": {
+        "role": "primary",
+        "displayName": "Sauge d'ombre",
+        "canonical": "#3a5136",
+        "darkValue": "#c2d7bb",
+        "tonalRamp": [
+          "oklch(15% 0.018 140.9)",
+          "oklch(25% 0.031 140.9)",
+          "oklch(35% 0.045 140.9)",
+          "oklch(50% 0.052 140.9)",
+          "oklch(62% 0.052 140.9)",
+          "oklch(74% 0.047 140.9)",
+          "oklch(85% 0.034 140.9)",
+          "oklch(95% 0.018 140.9)"
+        ]
+      },
+      "on-primary": {
+        "role": "neutral",
+        "displayName": "Crème lumineuse",
+        "canonical": "#fffaf2",
+        "darkValue": "#1d1711",
+        "tonalRamp": [
+          "oklch(15% 0.004 79.8)",
+          "oklch(25% 0.007 79.8)",
+          "oklch(35% 0.010 79.8)",
+          "oklch(50% 0.012 79.8)",
+          "oklch(62% 0.012 79.8)",
+          "oklch(74% 0.011 79.8)",
+          "oklch(85% 0.008 79.8)",
+          "oklch(95% 0.004 79.8)"
+        ]
+      },
+      "gold": {
+        "role": "tertiary",
+        "displayName": "Or discret",
+        "canonical": "#7a5c1c",
+        "darkValue": "#d9b36a",
+        "tonalRamp": [
+          "oklch(15% 0.031 82.5)",
+          "oklch(25% 0.051 82.5)",
+          "oklch(35% 0.072 82.5)",
+          "oklch(50% 0.088 82.5)",
+          "oklch(62% 0.088 82.5)",
+          "oklch(74% 0.079 82.5)",
+          "oklch(85% 0.057 82.5)",
+          "oklch(95% 0.031 82.5)"
+        ]
+      },
+      "focus-ring": {
+        "role": "neutral",
+        "displayName": "Encre de focus",
+        "canonical": "#2a1f17",
+        "darkValue": "#f4ece0",
+        "tonalRamp": [
+          "oklch(15% 0.008 57.5)",
+          "oklch(25% 0.013 57.5)",
+          "oklch(35% 0.019 57.5)",
+          "oklch(50% 0.022 57.5)",
+          "oklch(62% 0.022 57.5)",
+          "oklch(74% 0.020 57.5)",
+          "oklch(85% 0.015 57.5)",
+          "oklch(95% 0.008 57.5)"
+        ]
+      },
+      "success": {
+        "role": "success",
+        "displayName": "Vert feuille",
+        "canonical": "#2c6a4a",
+        "darkValue": "#8fcfad",
+        "tonalRamp": [
+          "oklch(15% 0.029 158.3)",
+          "oklch(25% 0.050 158.3)",
+          "oklch(35% 0.071 158.3)",
+          "oklch(50% 0.083 158.3)",
+          "oklch(62% 0.083 158.3)",
+          "oklch(74% 0.075 158.3)",
+          "oklch(85% 0.054 158.3)",
+          "oklch(95% 0.029 158.3)"
+        ]
+      },
+      "warning": {
+        "role": "warning",
+        "displayName": "Ambre brûlé",
+        "canonical": "#7f5300",
+        "darkValue": "#e6b655",
+        "tonalRamp": [
+          "oklch(15% 0.031 73.8)",
+          "oklch(25% 0.052 73.8)",
+          "oklch(35% 0.073 73.8)",
+          "oklch(50% 0.102 73.8)",
+          "oklch(62% 0.102 73.8)",
+          "oklch(74% 0.091 73.8)",
+          "oklch(85% 0.066 73.8)",
+          "oklch(95% 0.036 73.8)"
+        ]
+      },
+      "danger": {
+        "role": "danger",
+        "displayName": "Terre de brique",
+        "canonical": "#a3362a",
+        "darkValue": "#f0a094",
+        "tonalRamp": [
+          "oklch(15% 0.051 29.6)",
+          "oklch(25% 0.088 29.6)",
+          "oklch(35% 0.124 29.6)",
+          "oklch(50% 0.146 29.6)",
+          "oklch(62% 0.146 29.6)",
+          "oklch(74% 0.132 29.6)",
+          "oklch(85% 0.081 29.6)",
+          "oklch(95% 0.025 29.6)"
+        ]
+      },
+      "danger-hover": {
+        "role": "danger",
+        "displayName": "Brique profonde",
+        "canonical": "#8f2f25",
+        "darkValue": "#f4b0a6",
+        "tonalRamp": [
+          "oklch(15% 0.046 29.2)",
+          "oklch(25% 0.079 29.2)",
+          "oklch(35% 0.112 29.2)",
+          "oklch(50% 0.132 29.2)",
+          "oklch(62% 0.132 29.2)",
+          "oklch(74% 0.119 29.2)",
+          "oklch(85% 0.079 29.2)",
+          "oklch(95% 0.025 29.2)"
+        ]
+      },
+      "on-danger": {
+        "role": "neutral",
+        "displayName": "Crème lumineuse",
+        "canonical": "#fffaf2",
+        "darkValue": "#1d1711",
+        "tonalRamp": [
+          "oklch(15% 0.004 79.8)",
+          "oklch(25% 0.007 79.8)",
+          "oklch(35% 0.010 79.8)",
+          "oklch(50% 0.012 79.8)",
+          "oklch(62% 0.012 79.8)",
+          "oklch(74% 0.011 79.8)",
+          "oklch(85% 0.008 79.8)",
+          "oklch(95% 0.004 79.8)"
+        ]
+      },
+      "accent-bapteme": {
+        "role": "secondary",
+        "displayName": "Ciel de baptême",
+        "canonical": "#42698f",
+        "darkValue": "#9bbfe2",
+        "tonalRamp": [
+          "oklch(15% 0.026 248.9)",
+          "oklch(25% 0.045 248.9)",
+          "oklch(35% 0.064 248.9)",
+          "oklch(50% 0.075 248.9)",
+          "oklch(62% 0.075 248.9)",
+          "oklch(74% 0.068 248.9)",
+          "oklch(85% 0.049 248.9)",
+          "oklch(95% 0.024 248.9)"
+        ]
+      },
+      "accent-anniversaire": {
+        "role": "secondary",
+        "displayName": "Terre cuite",
+        "canonical": "#a0432a",
+        "darkValue": "#e59a80",
+        "tonalRamp": [
+          "oklch(15% 0.045 36.0)",
+          "oklch(25% 0.078 36.0)",
+          "oklch(35% 0.110 36.0)",
+          "oklch(50% 0.130 36.0)",
+          "oklch(62% 0.130 36.0)",
+          "oklch(74% 0.117 36.0)",
+          "oklch(85% 0.081 36.0)",
+          "oklch(95% 0.025 36.0)"
+        ]
+      },
+      "accent-fete": {
+        "role": "secondary",
+        "displayName": "Prune de fête",
+        "canonical": "#7a3d6f",
+        "darkValue": "#d3a3c8",
+        "tonalRamp": [
+          "oklch(15% 0.038 334.4)",
+          "oklch(25% 0.065 334.4)",
+          "oklch(35% 0.092 334.4)",
+          "oklch(50% 0.108 334.4)",
+          "oklch(62% 0.108 334.4)",
+          "oklch(74% 0.097 334.4)",
+          "oklch(85% 0.070 334.4)",
+          "oklch(95% 0.036 334.4)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-xl": {
+        "displayName": "Display XL",
+        "purpose": "Nom des mariés ou de l’événement en couverture."
+      },
+      "display-lg": {
+        "displayName": "Display LG",
+        "purpose": "Titres de page et de section."
+      },
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "Titres de carte et d’écran."
+      },
+      "body-lg": {
+        "displayName": "Body LG",
+        "purpose": "Texte d’invitation et programme."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texte courant et formulaires."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Libellés de champs et de boutons."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Légendes, aides et mentions."
+      },
+      "eyebrow": {
+        "displayName": "Eyebrow",
+        "purpose": "Sur-titres en capitales : DATE, LIEU, INVITER."
+      },
+      "script": {
+        "displayName": "Script",
+        "purpose": "Un seul moment manuscrit par écran, décoratif et aria-hidden."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-card",
+        "value": "0 1px 2px rgba(42, 31, 23, 0.10), 0 8px 24px rgba(42, 31, 23, 0.08)",
+        "purpose": "Carte d’invitation et carte d’événement du tableau de bord : un objet posé sur la page."
+      },
+      {
+        "name": "shadow-overlay",
+        "value": "0 24px 64px rgba(42, 31, 23, 0.18)",
+        "purpose": "Dialogue natif et menu flottant."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duration-instant",
+        "value": "0ms",
+        "purpose": "Focus : état immédiat."
+      },
+      {
+        "name": "duration-micro",
+        "value": "75ms",
+        "purpose": "Appui et micro-interaction."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Survol, couleur, bordure."
+      },
+      {
+        "name": "duration-base",
+        "value": "250ms",
+        "purpose": "Dialogue et révélation courte."
+      },
+      {
+        "name": "duration-slow",
+        "value": "400ms",
+        "purpose": "Apparition de contenu et progression."
+      },
+      {
+        "name": "duration-reveal",
+        "value": "600ms",
+        "purpose": "Moment scénarisé unique par écran."
+      },
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "Courbe par défaut des transitions d’état."
+      },
+      {
+        "name": "ease-enter",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrée de dialogue et apparition."
+      },
+      {
+        "name": "ease-exit",
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "purpose": "Sortie et disparition."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale, une seule par écran ; sauge par défaut, accent de l’événement en contexte.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Créer mon événement</button>",
+      "css": ".ds-btn-primary { box-sizing: border-box;\n  display: inline-flex; align-items: center; justify-content: center; gap: 8px;\n  min-height: 44px; padding: 0 20px; border: 1px solid var(--primary, #4e6b48);\n  border-radius: var(--control-radius, 2px);\n  background: var(--primary, #4e6b48); color: var(--on-primary, #fffaf2);\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); font-size: 14px; font-weight: 600; line-height: 1.43;\n  text-decoration: none; cursor: pointer; touch-action: manipulation;\n  transition: background-color 150ms cubic-bezier(0.2, 0, 0, 1), border-color 150ms cubic-bezier(0.2, 0, 0, 1);\n}\n.ds-btn-primary:hover { background: var(--primary-hover, #445e3f); border-color: var(--primary-hover, #445e3f); }\n.ds-btn-primary:active { background: var(--primary-active, #3a5136); border-color: var(--primary-active, #3a5136); }\n.ds-btn-primary:focus-visible { outline: 2px solid var(--focus-ring, #2a1f17); outline-offset: 2px; }\n.ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action de soutien : contour fort, fond transparent, survol en papier enfoncé.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">Se connecter</a>",
+      "css": ".ds-btn-secondary { box-sizing: border-box;\n  display: inline-flex; align-items: center; justify-content: center; gap: 8px;\n  min-height: 44px; padding: 0 20px; border: 1px solid var(--border-strong, #8a7560);\n  border-radius: var(--control-radius, 2px);\n  background: transparent; color: var(--text-primary, #2a1f17);\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); font-size: 14px; font-weight: 600; line-height: 1.43;\n  text-decoration: none; cursor: pointer; touch-action: manipulation;\n  transition: background-color 150ms cubic-bezier(0.2, 0, 0, 1), border-color 150ms cubic-bezier(0.2, 0, 0, 1);\n}\n.ds-btn-secondary:hover { background: var(--surface-muted, #e8dcc8); }\n.ds-btn-secondary:active { background: var(--surface-muted, #e8dcc8); border-color: var(--text-secondary, #66554a); }\n.ds-btn-secondary:focus-visible { outline: 2px solid var(--focus-ring, #2a1f17); outline-offset: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Action destructive uniquement, après confirmation explicite ; jamais pour une action réversible.",
+      "html": "<button class=\"ds-btn-danger\" type=\"button\">Supprimer définitivement</button>",
+      "css": ".ds-btn-danger { box-sizing: border-box;\n  display: inline-flex; align-items: center; justify-content: center; gap: 8px;\n  min-height: 44px; padding: 0 20px; border: 1px solid var(--danger, #a3362a);\n  border-radius: var(--control-radius, 2px);\n  background: var(--danger, #a3362a); color: var(--on-danger, #fffaf2);\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); font-size: 14px; font-weight: 600; line-height: 1.43;\n  cursor: pointer; touch-action: manipulation;\n  transition: background-color 150ms cubic-bezier(0.2, 0, 0, 1), border-color 150ms cubic-bezier(0.2, 0, 0, 1);\n}\n.ds-btn-danger:hover { background: var(--danger-hover, #8f2f25); border-color: var(--danger-hover, #8f2f25); }\n.ds-btn-danger:focus-visible { outline: 2px solid var(--focus-ring, #2a1f17); outline-offset: 2px; }\n.ds-btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Champ de formulaire à libellé visible, fond carton, bordure forte et focus encre.",
+      "html": "<div class=\"ds-field-group\">\n  <label class=\"ds-label\" for=\"ds-email\">Adresse e-mail</label>\n  <input class=\"ds-field\" id=\"ds-email\" type=\"email\" placeholder=\"vous@exemple.ci\" aria-describedby=\"ds-email-help\">\n  <p class=\"ds-help\" id=\"ds-email-help\">Utilisée pour envoyer l’invitation.</p>\n</div>",
+      "css": ".ds-field-group { display: grid; gap: 12px; max-width: 420px; font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); }\n.ds-label { font-size: 14px; font-weight: 600; line-height: 1.43; color: var(--text-primary, #2a1f17); }\n.ds-field { box-sizing: border-box;\n  width: 100%; min-height: 44px; padding: 10px 12px;\n  border: 1px solid var(--border-strong, #8a7560); border-radius: var(--control-radius, 2px);\n  background: var(--surface-muted, #e8dcc8); color: var(--text-primary, #2a1f17);\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); font-size: 16px; line-height: 1.5;\n  transition: border-color 150ms cubic-bezier(0.2, 0, 0, 1);\n}\n.ds-field::placeholder { color: var(--text-secondary, #66554a); opacity: 1; }\n.ds-field:hover:not(:focus) { border-color: var(--text-secondary, #66554a); }\n.ds-field:focus-visible { border-color: var(--text-primary, #2a1f17); outline: 2px solid var(--focus-ring, #2a1f17); outline-offset: 2px; }\n.ds-help { margin: 0; font-size: 13px; line-height: 1.38; color: var(--text-secondary, #66554a); }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "status-pill-success",
+      "description": "Statut compact : mot + icône + couleur, jamais la couleur seule. Quatre teintes, icône de 12 px.",
+      "html": "<span class=\"ds-pill ds-pill-success\">\n  <svg viewBox=\"0 0 16 16\" width=\"12\" height=\"12\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 8.5 6.2 11.5 13 4.5\"/></svg>\n  Confirmé\n</span>",
+      "css": ".ds-pill { box-sizing: border-box;\n  display: inline-flex; align-items: center; gap: 4px; min-height: 24px; padding: 2px 10px;\n  border: 1px solid var(--border, #d9c9b0); border-radius: var(--pill-radius, 999px);\n  background: var(--surface, #f3ebdd); color: var(--text-primary, #2a1f17);\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); font-size: 13px; font-weight: 600; line-height: 1.38;\n}\n.ds-pill svg { width: 12px; height: 12px; flex: none; }\n.ds-pill-neutral { color: var(--text-primary, #2a1f17); border-color: var(--border, #d9c9b0); }\n.ds-pill-success { color: var(--success, #2c6a4a); border-color: var(--success, #2c6a4a); }\n.ds-pill-warning { color: var(--warning, #7f5300); border-color: var(--warning, #7f5300); }\n.ds-pill-danger { color: var(--danger, #a3362a); border-color: var(--danger, #a3362a); }"
+    },
+    {
+      "name": "Alert",
+      "kind": "custom",
+      "refersTo": "alert-danger",
+      "description": "Message de session ou d’erreur : bordure et icône dans la teinte, rôle alert pour le danger.",
+      "html": "<div class=\"ds-alert ds-alert-danger\" role=\"alert\">\n  <svg viewBox=\"0 0 20 20\" width=\"18\" height=\"18\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 2.5 18 17H2L10 2.5Z\"/><path d=\"M10 7v4.5\"/><path d=\"M10 14.5h.01\"/></svg>\n  <div class=\"ds-alert__body\">\n    <p class=\"ds-alert__title\">Paiement refusé</p>\n    <p class=\"ds-alert__text\">Vérifie ta carte puis réessaie.</p>\n  </div>\n</div>",
+      "css": ".ds-alert { box-sizing: border-box;\n  display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px;\n  border: 1px solid var(--border, #d9c9b0); border-radius: var(--control-radius, 2px);\n  background: var(--surface, #f3ebdd); color: var(--text-primary, #2a1f17);\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); font-size: 13px; line-height: 1.38;\n}\n.ds-alert svg { flex: none; margin-top: 1px; }\n.ds-alert__title { margin: 0; font-weight: 600; }\n.ds-alert__text { margin: 4px 0 0; }\n.ds-alert-info { color: var(--gold, #7a5c1c); border-color: var(--gold, #7a5c1c); }\n.ds-alert-success { color: var(--success, #2c6a4a); border-color: var(--success, #2c6a4a); }\n.ds-alert-warning { color: var(--warning, #7f5300); border-color: var(--warning, #7f5300); }\n.ds-alert-danger { color: var(--danger, #a3362a); border-color: var(--danger, #a3362a); }"
+    },
+    {
+      "name": "Invitation Card",
+      "kind": "card",
+      "refersTo": "card-invitation",
+      "description": "La pièce signature : carte ombrée, filet d’accent de 4 px, titre display, séparateur et mesure d’invitation.",
+      "html": "<article class=\"ds-invitation\">\n  <div class=\"ds-invitation__accent\" aria-hidden=\"true\"></div>\n  <div class=\"ds-invitation__body\">\n    <p class=\"ds-invitation__eyebrow\">Mariage</p>\n    <h2 class=\"ds-invitation__title\">Mariage QR 2026</h2>\n    <p class=\"ds-invitation__meta\">samedi 12 décembre 2026 à 17h00</p>\n    <p class=\"ds-invitation__meta ds-invitation__meta--plain\">Espace Latrille — Cocody, Abidjan</p>\n    <p class=\"ds-invitation__caption\">Code vestimentaire : Tenue de cérémonie, tons clairs</p>\n    <div class=\"ds-invitation__rule\" aria-hidden=\"true\"></div>\n    <p class=\"ds-invitation__eyebrow\">Invitation pour</p>\n    <p class=\"ds-invitation__guest\">Famille Bamba</p>\n    <p class=\"ds-invitation__caption\">2 places réservées pour votre foyer.</p>\n  </div>\n</article>",
+      "css": ".ds-invitation { box-sizing: border-box;\n  overflow: hidden; border: 1px solid var(--border, #d9c9b0); border-radius: var(--control-radius, 2px);\n  background: var(--surface, #f3ebdd); color: var(--text-primary, #2a1f17);\n  box-shadow: var(--card-shadow, 0 1px 2px rgba(42,31,23,.10), 0 8px 24px rgba(42,31,23,.08));\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); max-width: 42rem;\n}\n.ds-invitation__accent { height: 4px; background: var(--primary, #4e6b48); }\n.ds-invitation__body { padding: 24px; }\n@media (min-width: 640px) { .ds-invitation__body { padding: 40px; } }\n.ds-invitation__eyebrow { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.33; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary, #66554a); }\n.ds-invitation__title { margin: 8px 0 0; font-family: var(--font-display-stack, 'Cormorant Garamond', Cormorant, Georgia, serif); font-size: clamp(1.5rem, 3.5vw, 1.875rem); font-weight: 600; line-height: 1.13; color: var(--text-primary, #2a1f17); }\n@media (min-width: 640px) { .ds-invitation__title { font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 500; line-height: 1.05; } }\n.ds-invitation__meta { margin: 16px 0 0; font-size: 18px; line-height: 1.55; color: var(--text-secondary, #66554a); max-width: 48ch; }\n.ds-invitation__meta--plain { margin-top: 0; font-size: 16px; }\n.ds-invitation__caption { margin: 4px 0 0; font-size: 13px; line-height: 1.38; color: var(--text-secondary, #66554a); }\n.ds-invitation__rule { margin: 32px 0 24px; border-top: 1px solid var(--border, #d9c9b0); }\n.ds-invitation__guest { margin: 4px 0 0; font-family: var(--font-display-stack, 'Cormorant Garamond', Cormorant, Georgia, serif); font-size: clamp(1.5rem, 3.5vw, 1.875rem); font-weight: 600; line-height: 1.13; color: var(--text-primary, #2a1f17); }"
+    },
+    {
+      "name": "Dashboard Event Card",
+      "kind": "card",
+      "refersTo": "card-invitation",
+      "description": "La même papeterie côté organisateur : filet d’accent, titre display, pastilles de modération et actions.",
+      "html": "<article class=\"ds-event-card\">\n  <div class=\"ds-event-card__accent\" aria-hidden=\"true\"></div>\n  <p class=\"ds-event-card__eyebrow\">Mariage</p>\n  <h3 class=\"ds-event-card__title\"><a href=\"#\">Mariage QR 2026</a></h3>\n  <dl class=\"ds-event-card__meta\">\n    <div><dt class=\"ds-sr-only\">Date</dt><dd>samedi 12 décembre 2026 à 17h00</dd></div>\n    <div><dt class=\"ds-sr-only\">Lieu</dt><dd>Espace Latrille</dd></div>\n  </dl>\n  <div class=\"ds-event-card__footer\">\n    <div class=\"ds-event-card__pills\">\n      <span class=\"ds-event-card__pill\">4 foyers</span>\n      <span class=\"ds-event-card__pill ds-event-card__pill--warning\">3 messages à modérer</span>\n    </div>\n    <div class=\"ds-event-card__actions\"><a href=\"#\">Modifier</a><a class=\"ds-event-card__open\" href=\"#\">Ouvrir</a></div>\n  </div>\n</article>",
+      "css": ".ds-event-card { box-sizing: border-box;\n  display: flex; flex-direction: column; padding: 0 24px 24px;\n  border: 1px solid var(--border, #d9c9b0); border-radius: var(--control-radius, 2px);\n  background: var(--surface, #f3ebdd); color: var(--text-primary, #2a1f17);\n  box-shadow: var(--card-shadow, 0 1px 2px rgba(42,31,23,.10), 0 8px 24px rgba(42,31,23,.08));\n  font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); max-width: 32rem;\n}\n.ds-event-card__accent { height: 4px; margin: 0 -24px 16px; background: var(--primary, #4e6b48); }\n.ds-event-card__eyebrow { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.33; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary, #66554a); }\n.ds-event-card__title { margin: 4px 0 0; font-family: var(--font-display-stack, 'Cormorant Garamond', Cormorant, Georgia, serif); font-size: clamp(1.5rem, 3.5vw, 1.875rem); font-weight: 600; line-height: 1.13; }\n.ds-event-card__title a { color: inherit; text-decoration: none; }\n.ds-event-card__title a:hover { color: var(--primary, #4e6b48); }\n.ds-event-card__meta { margin: 16px 0 0; font-size: 16px; line-height: 1.5; color: var(--text-secondary, #66554a); }\n.ds-event-card__meta div { display: flex; gap: 8px; }\n.ds-event-card__meta dd { margin: 0; }\n.ds-event-card__footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border, #d9c9b0); }\n.ds-event-card__pills { display: flex; flex-wrap: wrap; gap: 8px; }\n.ds-event-card__pill { display: inline-flex; align-items: center; min-height: 24px; padding: 2px 10px; border: 1px solid var(--border, #d9c9b0); border-radius: var(--pill-radius, 999px); background: var(--surface, #f3ebdd); font-size: 13px; font-weight: 600; line-height: 1.38; }\n.ds-event-card__pill--warning { color: var(--warning, #7f5300); border-color: var(--warning, #7f5300); }\n.ds-event-card__actions { display: flex; align-items: center; gap: 16px; font-size: 14px; font-weight: 600; }\n.ds-event-card__actions a { color: var(--text-secondary, #66554a); text-decoration: none; }\n.ds-event-card__actions a:hover { color: var(--text-primary, #2a1f17); }\n.ds-event-card__actions .ds-event-card__open { color: var(--primary, #4e6b48); }\n.ds-event-card__actions .ds-event-card__open:hover { text-decoration: underline; }\n.ds-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }"
+    },
+    {
+      "name": "Navigation Header",
+      "kind": "nav",
+      "description": "En-tête sobre, filet inférieur, marque en display serif et liens en label 14/600 avec cibles de 44 px.",
+      "html": "<header class=\"ds-header\">\n  <div class=\"ds-header__inner\">\n    <a class=\"ds-header__brand\" href=\"#\">Hub Événement</a>\n    <nav class=\"ds-header__nav\" aria-label=\"Navigation principale\">\n      <a href=\"#\">Mon espace</a>\n      <a class=\"ds-header__cta\" href=\"#\">Créer un compte</a>\n    </nav>\n  </div>\n</header>",
+      "css": ".ds-header { box-sizing: border-box; border-bottom: 1px solid var(--border, #d9c9b0); background: var(--background, #fbf6ee); font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); }\n.ds-header__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; max-width: 64rem; margin: 0 auto; padding: 12px 16px; }\n.ds-header__brand { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-display-stack, 'Cormorant Garamond', Cormorant, Georgia, serif); font-size: 20px; color: var(--text-primary, #2a1f17); text-decoration: none; white-space: nowrap; }\n.ds-header__nav { display: flex; align-items: center; gap: 16px; }\n.ds-header__nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-secondary, #66554a); font-size: 14px; font-weight: 600; text-decoration: none; }\n.ds-header__nav a:hover { color: var(--text-primary, #2a1f17); }\n.ds-header__nav .ds-header__cta { box-sizing: border-box; min-height: 44px; padding: 0 20px; white-space: nowrap; border: 1px solid var(--primary, #4e6b48); border-radius: var(--control-radius, 2px); background: var(--primary, #4e6b48); color: var(--on-primary, #fffaf2); }\n.ds-header__nav .ds-header__cta:hover { background: var(--primary-hover, #445e3f); border-color: var(--primary-hover, #445e3f); color: var(--on-primary, #fffaf2); }\n.ds-header__nav a:focus-visible { outline: 2px solid var(--focus-ring, #2a1f17); outline-offset: 2px; }"
+    },
+    {
+      "name": "Funding Progress",
+      "kind": "custom",
+      "description": "Barre de cagnotte de 6 px, valeur toujours écrite en texte, aucune animation pendant un paiement.",
+      "html": "<div class=\"ds-progress-block\">\n  <div class=\"ds-progress__labels\">\n    <span>Cagnotte</span>\n    <span class=\"ds-progress__value\">620 000 F CFA</span>\n  </div>\n  <div class=\"ds-progress\" role=\"progressbar\" aria-label=\"Cagnotte\" aria-valuemin=\"0\" aria-valuemax=\"1000000\" aria-valuenow=\"620000\">\n    <div class=\"ds-progress__bar\" style=\"width: 62%\"></div>\n  </div>\n</div>",
+      "css": ".ds-progress-block { font-family: var(--font-sans-stack, 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif); max-width: 420px; }\n.ds-progress__labels { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 13px; line-height: 1.38; color: var(--text-secondary, #66554a); }\n.ds-progress__value { color: var(--text-primary, #2a1f17); font-variant-numeric: tabular-nums; }\n.ds-progress { box-sizing: border-box; height: 6px; overflow: hidden; border-radius: var(--pill-radius, 999px); background: var(--surface-muted, #e8dcc8); }\n.ds-progress__bar { height: 100%; border-radius: inherit; background: var(--primary, #4e6b48); transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Papier & lumière — l’invitation imprimée, le registre bien tenu",
+    "overview": "Hub Événement vit sur deux registres qui doivent sembler sortir de la même papeterie. Côté invité, l’écran est une invitation : papier crème, encre chaude, un titre en Cormorant Garamond, un accent d’événement unique, un or discret pour les ornements et un seul moment manuscrit. Côté organisateur, le même papier devient un registre : filets fins, chiffres tabulaires, statuts explicites et actions nommées par des verbes. L’émotion vient du matériau, jamais d’effets ajoutés.\n\nLe système est chaleureux mais opérationnel. La bordure porte la structure ; l’ombre est un événement rare, réservée à la carte d’invitation et aux couches flottantes. Cette retenue donne confiance à un organisateur qui vérifie des couverts sur son téléphone et laisse à l’invité une impression d’objet imprimé, pas de tableau de bord.\n\nLa direction assume un ancrage ivoirien par petites touches — filets, séparateurs, photos réelles et chaudes — jamais par un motif plein cadre. Les rejets confirmés sont explicites : deux accents d’événement sur un même écran, l’emoji décoratif, la couleur seule comme statut, l’ombre utilisée comme séparateur et toute animation pendant un paiement.",
+    "keyCharacteristics": [
+      "Papier crème, encre brune, un seul accent d’événement, un or d’ornement.",
+      "Cormorant Garamond pour les titres, DM Sans pour tout ce qui se lit ou s’actionne, Pinyon Script une fois par écran au maximum.",
+      "La bordure d’abord ; deux ombres seulement, pour la carte d’invitation et les dialogues.",
+      "Angles presque droits (2 px), filets de 1 px, pastilles et progression en pilule.",
+      "Mobile d’abord, français uniquement, cibles tactiles de 44 px et focus toujours visible.",
+      "Cible WCAG 2.2 AA ; aucune conformité formelle n’est revendiquée à ce jour."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Un seul accent d’événement par écran. Deux classes ev-* ne se combinent jamais ; l’accent se pose une fois, sur un ancêtre, et cascade vers les boutons, liens, barres et focus.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gold Ornament Rule",
+        "body": "L’or orne, il n’informe pas. Il peut colorer un filet, un chiffre clé ou un lien secondaire, jamais le seul signe d’un état.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Color Alone Rule",
+        "body": "Un statut, une erreur ou une sélection associe toujours un mot et une icône à la couleur.",
+        "section": "colors"
+      },
+      {
+        "name": "The QR Exception Rule",
+        "body": "Le QR d’entrée conserve un fond #FFFAF2 même en thème sombre. C’est la seule couleur codée en dur tolérée dans une vue.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Script Rule",
+        "body": "Un seul moment manuscrit par écran. Le script est décoratif (aria-hidden), jamais porteur d’information.",
+        "section": "typography"
+      },
+      {
+        "name": "The Display Titles Rule",
+        "body": "Les titres h1–h3 utilisent Cormorant Garamond ; les libellés, boutons, champs, tableaux et messages restent en DM Sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "Montants, compteurs, dates et colonnes de données utilisent des chiffres tabulaires. Les montants s’écrivent en F CFA avec un séparateur d’espace : « 25 000 F CFA ».",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Rule",
+        "body": "Texte courant 65ch, invitation 48ch, légendes longues 80ch.",
+        "section": "typography"
+      },
+      {
+        "name": "The Border-First Rule",
+        "body": "La bordure porte la structure. Une ombre ne remplace jamais un filet de séparation.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Structural Shadow Rule",
+        "body": "Une ombre signale un objet (carte d’invitation) ou une couche flottante (dialogue, menu), jamais une hiérarchie, un survol ou une carte ordinaire.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do utiliser les jetons sémantiques (bg-surface, text-foreground, border-border-strong, bg-primary) ; jamais une primitive ni un hex dans une vue.",
+      "Do poser une seule classe ev-* sur un ancêtre et laisser l’accent cascader.",
+      "Do réserver l’ombre à la carte d’invitation, à la carte d’événement et aux couches flottantes.",
+      "Do garder 44 px de cible tactile, 8 px entre les cibles principales et un anneau de focus de 2 px décalé de 2 px.",
+      "Do accompagner chaque statut d’un mot et d’une icône, et écrire les montants en chiffres tabulaires.",
+      "Do utiliser text-foreground pour le texte courant ; text-primary désigne l’accent, pas le texte.",
+      "Do réserver Cormorant Garamond aux titres et DM Sans aux libellés, champs, boutons, tableaux et messages.",
+      "Do limiter le script à un moment par écran, décoratif et masqué aux lecteurs d’écran.",
+      "Do garder le QR d’entrée sur fond #FFFAF2 et le rendre téléchargeable.",
+      "Do écrire en français, avec un ton chaleureux et précis ; les actions sont des verbes."
+    ],
+    "donts": [
+      "Don’t combiner deux accents d’événement sur un même écran.",
+      "Don’t utiliser la couleur seule pour un statut, une erreur ou une sélection.",
+      "Don’t coder un hex ou une palette Tailwind brute dans une vue ; seule exception : le fond du QR.",
+      "Don’t utiliser une ombre comme séparateur, comme hiérarchie ou comme effet de survol.",
+      "Don’t employer deux moments manuscrits sur le même écran.",
+      "Don’t animer quoi que ce soit pendant un paiement.",
+      "Don’t supprimer l’anneau de focus ni le différer.",
+      "Don’t utiliser d’emoji décoratif ni de motif africain en fond plein cadre.",
+      "Don’t utiliser un placeholder comme libellé, ni remplacer le libellé d’un bouton en chargement par le spinner seul.",
+      "Don’t mélanger tutoiement et vouvoiement dans un même événement.",
+      "Don’t utiliser de grandes rondeurs ni transformer un bouton en pilule.",
+      "Don’t mettre du texte courant en Cormorant ou en script.",
+      "Don’t utiliser surface comme fond du QR, même en thème sombre."
+    ]
+  }
+}
