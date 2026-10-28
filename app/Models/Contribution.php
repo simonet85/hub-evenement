@@ -38,7 +38,6 @@ class Contribution extends Model
         'reconciled_by',
         'reconciled_at',
         'reconciliation_note',
-        'payload',
     ];
 
     protected $attributes = [

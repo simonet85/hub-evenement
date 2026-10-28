@@ -658,5 +658,42 @@
                 </p>
             @endif
         </section>
+
+        @can('delete', $event)
+            <section aria-labelledby="suppression-title" class="card mt-8 p-6">
+                <h2 id="suppression-title" class="font-display text-heading text-ink">Supprimer cet événement</h2>
+                <p class="mt-2 text-body text-ink-muted">
+                    La suppression efface définitivement les foyers, le livre d'or, les photos, les cadeaux et les contributions.
+                    Cette action est irréversible.
+                </p>
+
+                <form method="POST" action="{{ route('events.destroy', $event) }}" class="mt-4 space-y-3">
+                    @csrf
+                    @method('DELETE')
+
+                    <div>
+                        <label for="delete_confirmation" class="label">
+                            Saisissez « {{ $event->name }} » pour confirmer
+                        </label>
+                        <input
+                            id="delete_confirmation"
+                            name="confirmation"
+                            type="text"
+                            required
+                            maxlength="160"
+                            autocomplete="off"
+                            spellcheck="false"
+                            class="field mt-1 @error('confirmation') field-error @enderror"
+                            @error('confirmation') aria-invalid="true" aria-describedby="delete_confirmation-error" @enderror
+                        >
+                        @error('confirmation')
+                            <p id="delete_confirmation-error" class="error-text mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+                </form>
+            </section>
+        @endcan
     </div>
 @endsection

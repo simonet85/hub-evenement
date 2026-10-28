@@ -2,7 +2,7 @@
 
 Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invitations personnalisées, RSVP, QR code d'entrée, programme et carte, livre d'or, galerie modérée, cadeaux et cagnotte MoneyFusion, tableau de bord et exports traiteur.
 
-## État : Phase 11 — Animations et accessibilité
+## État : Phase 12 — Durcissement et mise en ligne
 
 - Laravel 12, Livewire 3, Tailwind CSS 4, MySQL 8.4, Pest 3.
 - Design System « Papier & lumière » : jetons (`design-system/tokens.json`) traduits en variables CSS et thème Tailwind.
@@ -56,6 +56,15 @@ Plateforme d'événements privés pour les particuliers en Côte d'Ivoire : invi
 - Carte du programme en région nommée et décrite, utilisable au clavier ; Leaflet et les tuiles ne sont chargés qu'à l'approche du viewport.
 - Galerie invitée en chargement paresseux (`loading="lazy"`, `decoding="async"`), ouverture dans une nouvelle fenêtre annoncée.
 - Lien d'évitement, contour de focus visible et cibles tactiles principales de 44 px minimum sur le parcours invité.
+- Limitation de débit sur les écritures publiques et sensibles : connexion, inscription, mot de passe, import CSV, galerie, relances, scan et paiements.
+- Validation stricte des envois (longueurs maximales, sélections plafonnées) et jetons d'invitation acceptés uniquement au format attendu.
+- Pages d'erreur personnalisées 403, 404, 419, 429, 500 et 503, sans trace technique ni donnée sensible.
+- En-têtes de sécurité (`nosniff`, anti-iframe, `Referrer-Policy`, `Permissions-Policy`) et HSTS derrière HTTPS ; cookies de session `Secure`, `HttpOnly` et chiffrés en production.
+- Journalisation des échecs de connexion, paiements non vérifiés, suppressions et purges ; rotation quotidienne des journaux.
+- Suppression d'un événement par son propriétaire, avec confirmation par le nom et nettoyage des fichiers privés.
+- Anonymisation planifiée des données invités après l'événement (`guests:purge`, 90 jours par défaut).
+- Contrôle de production `app:check-production` (HTTPS, cookies, journal, file, cache, stockage, base, SMTP).
+- Guide de déploiement, sauvegardes, restauration et retour arrière dans [`docs/deployment.md`](docs/deployment.md).
 - Tableau de bord listant les événements accessibles et leur nombre de foyers.
 - Infrastructure Docker de développement : application PHP 8.3, MySQL, Mailpit.
 
@@ -121,6 +130,8 @@ Les tests forcent SQLite en mémoire via `phpunit.xml`, même dans le conteneur 
 ```
 app/Http/Controllers/Auth/   inscription, connexion, réinitialisation
 app/Http/Controllers/        événements, foyers, import CSV, co-organisateurs, invitation, pointage, programme, relances, livre d'or, galerie photo, cadeaux et paiements, pilotage, exports
+app/Console/Commands/        contrôle de production et purge des données invités
+app/Http/Middleware/         en-têtes de sécurité
 app/Enums/                   statuts et types de contribution
 app/Jobs/                    envoi des e-mails de relance et génération des dérivés photo (file d'attente)
 app/Mail/                    reçu de réponse RSVP et relance (file d'attente)
@@ -137,6 +148,7 @@ resources/js/program-map.js  carte en lecture seule de la page programme
 resources/js/reveal.js       révélation progressive des sections (IntersectionObserver)
 resources/views/caterer/     portail traiteur signé en lecture seule
 resources/views/check-in/    page de scan et page directe de pointage
+resources/views/errors/     pages 403, 404, 419, 429, 500 et 503
 resources/views/events/      création, édition et détail d'un événement
 resources/views/exports/     gabarit PDF du dossier traiteur
 resources/views/gallery/     galerie invitée et modération des photos
@@ -148,14 +160,17 @@ resources/views/registry/    page invité cadeaux et cagnotte, journal organisat
 resources/views/reminders/   page relances et confirmation de désinscription
 resources/views/mail/        reçus et relances e-mail
 specs/                       mission, tech-stack, roadmap, spécifications de phase
+docs/deployment.md           mise en ligne, sauvegardes et exploitation
 .docker/php/Dockerfile       image PHP de développement
 compose.yaml                 app, MySQL, Mailpit, build des assets
 ```
 
 ## Prochaines étapes
 
-La Phase 12 couvre le durcissement et la mise en ligne. Voir [`specs/roadmap.md`](specs/roadmap.md).
+Les douze phases planifiées sont livrées. Les évolutions non planifiées (multi-langue, plan de table avancé, application mobile) sont listées dans [`specs/roadmap.md`](specs/roadmap.md).
 
 ## Déploiement
 
 La cible est un hébergement mutualisé PHP 8.3+ / MySQL, avec SSH, Composer et cron. Docker sert au développement local : un mutualisé ne peut pas exécuter de conteneurs. Les assets compilés (`public/build`) ne sont pas versionnés ; lancez `npm ci && npm run build` à chaque déploiement.
+
+La procédure complète — prérequis, `.env` de production, droits, migrations, caches, cron, file d'attente, sauvegardes, restauration et retour arrière — est dans [`docs/deployment.md`](docs/deployment.md). Après déploiement, `php artisan app:check-production` vérifie la configuration.

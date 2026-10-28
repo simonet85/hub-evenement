@@ -16,3 +16,4 @@ Artisan::command('contributions:expire', function (ContributionService $contribu
 })->purpose('Expirer les contributions en attente dépassées');
 
 Schedule::command('contributions:expire')->everyFiveMinutes();
+Schedule::command('guests:purge')->dailyAt('03:30');

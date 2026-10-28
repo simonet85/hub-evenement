@@ -42,8 +42,8 @@ class ReminderController extends Controller
 
         $data = $request->validate([
             'all' => ['nullable', 'boolean'],
-            'guest_ids' => ['required_without:all', 'array'],
-            'guest_ids.*' => ['integer'],
+            'guest_ids' => ['required_without:all', 'array', 'max:200'],
+            'guest_ids.*' => ['integer', 'distinct'],
         ]);
 
         $ids = $request->boolean('all')

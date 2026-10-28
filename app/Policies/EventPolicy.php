@@ -51,4 +51,9 @@ class EventPolicy
     {
         return $event->user_id === $user->id;
     }
+
+    public function delete(User $user, Event $event): bool
+    {
+        return $event->user_id === $user->id;
+    }
 }

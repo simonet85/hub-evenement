@@ -16,7 +16,7 @@ class CoOrganizerController extends Controller
         Gate::authorize('manageCoOrganizers', $event);
 
         $request->validate([
-            'co_email' => ['required', 'string', 'email'],
+            'co_email' => ['required', 'string', 'email', 'max:255'],
         ]);
 
         $user = User::query()

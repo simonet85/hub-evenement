@@ -25,21 +25,33 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 
-Route::get('i/{token}', [InvitationController::class, 'show'])->name('invitations.show');
-Route::get('i/{token}/programme', [InvitationController::class, 'programme'])->name('invitations.programme');
-Route::get('i/{token}/galerie', [GalleryController::class, 'guest'])->name('invitations.gallery');
-Route::get('i/{token}/cadeaux', [RegistryController::class, 'show'])->name('invitations.registry');
+Route::get('i/{token}', [InvitationController::class, 'show'])
+    ->where('token', '[A-Za-z0-9]{48}')
+    ->name('invitations.show');
+Route::get('i/{token}/programme', [InvitationController::class, 'programme'])
+    ->where('token', '[A-Za-z0-9]{48}')
+    ->name('invitations.programme');
+Route::get('i/{token}/galerie', [GalleryController::class, 'guest'])
+    ->where('token', '[A-Za-z0-9]{48}')
+    ->name('invitations.gallery');
+Route::get('i/{token}/cadeaux', [RegistryController::class, 'show'])
+    ->where('token', '[A-Za-z0-9]{48}')
+    ->name('invitations.registry');
 Route::post('i/{token}/cagnotte', [RegistryController::class, 'storeCagnotte'])
+    ->where('token', '[A-Za-z0-9]{48}')
     ->middleware('throttle:10,1')
     ->name('contributions.cagnotte');
 Route::post('i/{token}/cadeaux/{gift}', [RegistryController::class, 'storeGift'])
+    ->where('token', '[A-Za-z0-9]{48}')
     ->middleware('throttle:10,1')
     ->name('contributions.gift');
 Route::post('i/{token}/rsvp', [InvitationController::class, 'rsvp'])
+    ->where('token', '[A-Za-z0-9]{48}')
     ->middleware('throttle:20,1')
     ->name('invitations.rsvp');
 
 Route::post('i/{token}/livre-dor', [GuestbookController::class, 'store'])
+    ->where('token', '[A-Za-z0-9]{48}')
     ->middleware('throttle:5,1')
     ->name('guestbook.store');
 
@@ -59,12 +71,13 @@ Route::get('paiements/retour/{contribution}', [PaymentController::class, 'show']
     ->middleware('signed')
     ->name('payments.return');
 Route::post('paiements/webhook/{contribution}', [PaymentController::class, 'webhook'])
-    ->middleware('signed')
+    ->middleware(['signed', 'throttle:120,1'])
     ->withoutMiddleware(ValidateCsrfToken::class)
     ->name('payments.webhook');
 Route::get('paiement-simule/{token}', [PaymentController::class, 'simulator'])
     ->name('payments.simulator');
 Route::post('paiement-simule/{token}', [PaymentController::class, 'simulate'])
+    ->middleware('throttle:10,1')
     ->name('payments.simulator.complete');
 
 Route::get('relances/desinscription/{guest}', [ReminderController::class, 'unsubscribeShow'])
@@ -76,16 +89,22 @@ Route::post('relances/desinscription/{guest}', [ReminderController::class, 'unsu
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store'])
+        ->middleware('throttle:5,1');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware('throttle:5,1');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->middleware('throttle:3,1')
+        ->name('password.email');
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('password.store');
 });
 
 Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -100,11 +119,14 @@ Route::middleware('auth')->group(function () {
     Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
     Route::get('events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
     Route::put('events/{event}', [EventController::class, 'update'])->name('events.update');
+    Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 
     Route::post('events/{event}/guests', [GuestController::class, 'store'])->name('guests.store');
     Route::delete('events/{event}/guests/{guest}', [GuestController::class, 'destroy'])->name('guests.destroy');
     Route::post('events/{event}/guests/{guest}/invitation', [GuestController::class, 'regenerateInvitation'])->name('guests.invitation.regenerate');
-    Route::post('events/{event}/guests/import', [GuestImportController::class, 'store'])->name('guests.import');
+    Route::post('events/{event}/guests/import', [GuestImportController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('guests.import');
 
     Route::get('events/{event}/relances', [ReminderController::class, 'index'])->name('reminders.index');
     Route::post('events/{event}/relances', [ReminderController::class, 'store'])
@@ -117,7 +139,9 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/livre-dor/{entry}/rejeter', [GuestbookController::class, 'reject'])->name('guestbook.reject');
 
     Route::get('events/{event}/galerie', [GalleryController::class, 'index'])->name('gallery.index');
-    Route::post('events/{event}/galerie', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::post('events/{event}/galerie', [GalleryController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('gallery.store');
     Route::get('events/{event}/galerie/{photo}/apercu/{variant?}', [GalleryController::class, 'preview'])->name('gallery.preview');
     Route::put('events/{event}/galerie/{photo}', [GalleryController::class, 'caption'])->name('gallery.caption');
     Route::post('events/{event}/galerie/{photo}/approuver', [GalleryController::class, 'approve'])->name('gallery.approve');
@@ -139,7 +163,9 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/programme/{step}/move', [ProgramStepController::class, 'move'])->name('program-steps.move');
 
     Route::get('events/{event}/scan', [CheckInController::class, 'scan'])->name('check-in.scan');
-    Route::post('events/{event}/scan', [CheckInController::class, 'record'])->name('check-in.record');
+    Route::post('events/{event}/scan', [CheckInController::class, 'record'])
+        ->middleware('throttle:120,1')
+        ->name('check-in.record');
     Route::delete('events/{event}/guests/{guest}/check-in', [CheckInController::class, 'undo'])->name('check-in.undo');
     Route::get('events/{event}/guests/{guest}/entry-qr.svg', [CheckInController::class, 'qr'])->name('check-in.qr');
 
@@ -151,6 +177,8 @@ Route::middleware('auth')->group(function () {
     Route::get('events/{event}/exports/traiteur.pdf', [ExportController::class, 'catererPdf'])->name('exports.caterer.pdf');
 
     Route::get('check-in/{entryToken}', [CheckInController::class, 'show'])->name('check-in.show');
-    Route::post('check-in/{entryToken}', [CheckInController::class, 'store'])->name('check-in.store');
+    Route::post('check-in/{entryToken}', [CheckInController::class, 'store'])
+        ->middleware('throttle:60,1')
+        ->name('check-in.store');
     Route::post('check-in/{entryToken}/undo', [CheckInController::class, 'undoForm'])->name('check-in.undo.form');
 });

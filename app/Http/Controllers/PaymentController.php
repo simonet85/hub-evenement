@@ -10,6 +10,7 @@ use App\Services\MoneyFusion\PaymentResult;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 use Throwable;
@@ -54,6 +55,8 @@ class PaymentController extends Controller
         }
 
         if (! $result->verified) {
+            Log::warning('payment.unverified', ['contribution_id' => $contribution->id]);
+
             return response()->json(['status' => 'unverified'], 503);
         }
 

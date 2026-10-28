@@ -12,6 +12,7 @@ use App\Services\CheckInService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -94,6 +95,29 @@ class EventController extends Controller
         return redirect()
             ->route('events.show', $event)
             ->with('status', 'Événement mis à jour.');
+    }
+
+    public function destroy(Request $request, Event $event): RedirectResponse
+    {
+        Gate::authorize('delete', $event);
+
+        $request->validate([
+            'confirmation' => ['required', 'string', 'max:160', Rule::in([$event->name])],
+        ], [
+            'confirmation.required' => 'Saisissez le nom de l’événement pour confirmer.',
+            'confirmation.in' => 'Le texte de confirmation ne correspond pas au nom de l’événement.',
+        ]);
+
+        $eventId = $event->id;
+        $userId = $request->user()->id;
+
+        $event->delete();
+
+        Log::info('event.deleted', ['event_id' => $eventId, 'user_id' => $userId]);
+
+        return redirect()
+            ->route('dashboard')
+            ->with('status', 'Événement supprimé.');
     }
 
     /**
