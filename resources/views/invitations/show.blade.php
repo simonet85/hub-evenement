@@ -9,7 +9,7 @@
 
             <div class="p-6 sm:p-10">
                 <p class="eyebrow">{{ $event->type->label() }}</p>
-                <h1 class="mt-2 font-display text-heading text-ink sm:text-display-lg">
+                <h1 class="mt-2 font-display text-display-lg text-ink sm:text-display-xl">
                     {{ $event->name }}
                 </h1>
 
@@ -45,32 +45,12 @@
                     <p class="text-caption text-ink-muted">
                         {{ $guest->allowed_seats }} place{{ $guest->allowed_seats > 1 ? 's' : '' }} réservée{{ $guest->allowed_seats > 1 ? 's' : '' }} pour votre foyer.
                     </p>
-                    @if ($event->rsvp_deadline)
+                    @if ($event->rsvp_deadline && ! $guest->hasResponded() && ! $guest->isPastDeadline())
                         <p class="mt-2 text-caption text-ink-muted">
-                            Merci de répondre avant le {{ $event->rsvp_deadline->translatedFormat('j F Y') }}.
+                            Merci de répondre d'ici le {{ $event->rsvp_deadline->translatedFormat('j F Y') }}.
                         </p>
                     @endif
                 </div>
-
-                <section class="mt-8 border-t border-line pt-6 text-center" aria-labelledby="qr-title" data-reveal>
-                    <p class="eyebrow">Votre QR d'entrée</p>
-                    <h2 id="qr-title" class="mt-1 font-display text-heading text-ink">Présentez ce code à l'entrée</h2>
-                    <img
-                        src="{{ $qrCode }}"
-                        alt="QR code d'entrée pour {{ $guest->name }}"
-                        width="192"
-                        height="192"
-                        class="mx-auto mt-4 h-48 w-48 rounded-sm border border-line bg-[#fffaf2] p-2"
-                    >
-                    <a
-                        href="{{ $qrCode }}"
-                        download="qr-entree-foyer-{{ $guest->id }}.svg"
-                        class="btn btn-secondary mt-4"
-                    >
-                        Télécharger le QR
-                    </a>
-                    <p class="help mt-2">Un QR personnel par foyer. Il sert uniquement au pointage à l'entrée.</p>
-                </section>
 
                 @if ($guest->isPastDeadline() && ! $guest->hasResponded())
                     <p class="mt-4 rounded-sm border border-line bg-surface-300 p-3 text-caption text-warning" role="status">
@@ -127,6 +107,27 @@
                     </section>
                 @endif
 
+                @if ($guest->hasResponded() && $guest->rsvp_status === \App\Enums\RsvpStatus::Attending)
+                    <section class="mt-8 border-t border-line pt-6 text-center" aria-labelledby="qr-title" data-reveal>
+                        <h2 id="qr-title" class="font-display text-heading text-ink">Présentez ce code à l'entrée</h2>
+                        <img
+                            src="{{ $qrCode }}"
+                            alt="QR code d'entrée pour {{ $guest->name }}"
+                            width="192"
+                            height="192"
+                            class="mx-auto mt-4 h-48 w-48 rounded-sm border border-line bg-[#fffaf2] p-2"
+                        >
+                        <a
+                            href="{{ $qrCode }}"
+                            download="qr-entree-foyer-{{ $guest->id }}.svg"
+                            class="btn btn-secondary mt-4"
+                        >
+                            Télécharger le QR
+                        </a>
+                        <p class="help mt-2">Un QR personnel par foyer. Il sert uniquement au pointage à l'entrée.</p>
+                    </section>
+                @endif
+
                 @if ($guest->canRespond())
                     <section class="mt-8 border-t border-line pt-6" aria-labelledby="rsvp-title" data-reveal>
                         <h2 id="rsvp-title" class="font-display text-heading text-ink">
@@ -149,7 +150,7 @@
                                             @error('rsvp_status') aria-invalid="true" @enderror
                                             @checked(old('rsvp_status', $guest->rsvp_status->value) === \App\Enums\RsvpStatus::Attending->value)
                                         >
-                                        <span class="text-body text-ink">Oui, nous serons présents</span>
+                                        <span class="text-body text-ink">{{ $guest->allowed_seats > 1 ? 'Oui, nous serons présents' : 'Oui, je serai présent' }}</span>
                                     </label>
                                     <label for="rsvp_declined" class="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-sm border border-line-strong bg-surface-300 px-3 py-2">
                                         <input
@@ -160,7 +161,7 @@
                                             @error('rsvp_status') aria-invalid="true" @enderror
                                             @checked(old('rsvp_status', $guest->rsvp_status->value) === \App\Enums\RsvpStatus::Declined->value)
                                         >
-                                        <span class="text-body text-ink">Non, nous ne pourrons pas venir</span>
+                                        <span class="text-body text-ink">{{ $guest->allowed_seats > 1 ? 'Non, nous ne pourrons pas venir' : 'Non, je ne pourrai pas venir' }}</span>
                                     </label>
                                 </div>
                                 @error('rsvp_status')
@@ -256,6 +257,12 @@
                     </p>
                 @endif
 
+                @if ($guest->canRespond() && ! $guest->hasResponded())
+                    <p class="mt-8 border-t border-line pt-6 text-caption text-ink-muted">
+                        Votre QR d'entrée apparaîtra dès que vous aurez confirmé votre présence.
+                    </p>
+                @endif
+
                 <section id="livre-dor" class="mt-8 border-t border-line pt-6" aria-labelledby="livre-dor-title" data-reveal>
                     <div class="flex flex-wrap items-end justify-between gap-2">
                         <div>
@@ -331,7 +338,7 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-full">Signer le livre d'or</button>
+                        <button type="submit" class="btn btn-secondary w-full">Signer le livre d'or</button>
                     </form>
                 </section>
             </div>

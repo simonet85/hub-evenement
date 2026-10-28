@@ -39,7 +39,7 @@ it('marque les sections de l’invitation pour une révélation progressive', fu
         ->assertOk()
         ->getContent();
 
-    expect(substr_count($html, 'data-reveal'))->toBeGreaterThanOrEqual(4)
+    expect(substr_count($html, 'data-reveal'))->toBeGreaterThanOrEqual(3)
         ->and($html)->not->toContain('data-reveal-shown');
 });
 
