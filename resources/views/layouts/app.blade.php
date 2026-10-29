@@ -10,14 +10,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;600&family=Pinyon+Script&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('head')
 </head>
 <body class="flex min-h-screen flex-col bg-surface-100 text-ink">
-    <a href="#contenu" class="sr-only-focusable absolute left-4 top-4 z-50 bg-surface px-4 py-2 text-label text-foreground">
+    <a href="#contenu" class="sr-only-focusable absolute left-4 top-4 z-50 inline-flex min-h-11 items-center bg-surface px-4 text-label text-foreground">
         Aller au contenu
     </a>
 
@@ -42,8 +42,8 @@
                     <a href="{{ route('login') }}" class="inline-flex min-h-11 items-center text-label text-ink-muted hover:text-ink">
                         Se connecter
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary">
-                        Créer un compte
+                    <a href="{{ route('register') }}" class="btn @yield('header_cta_variant', 'btn-primary') @yield('header_cta_class')">
+                        @yield('header_cta', 'Créer un compte')
                     </a>
                 @endauth
             </nav>
@@ -67,7 +67,7 @@
 
     <footer class="border-t border-line">
         <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-6">
-            <p class="text-caption text-ink-muted">Hub Événement — Abidjan, Côte d'Ivoire</p>
+            <p class="text-caption text-ink-muted">Hub Événement — Abidjan, Côte d’Ivoire</p>
             <p class="text-caption text-ink-muted">Invitations, RSVP et cagnotte pour vos grands moments.</p>
         </div>
     </footer>

@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="flex min-h-screen flex-col bg-surface-100 text-ink">
-    <a href="#contenu" class="sr-only-focusable absolute left-4 top-4 z-50 bg-surface px-4 py-2 text-label text-foreground">
+    <a href="#contenu" class="sr-only-focusable absolute left-4 top-4 z-50 inline-flex min-h-11 items-center bg-surface px-4 text-label text-foreground">
         Aller au contenu
     </a>
 
