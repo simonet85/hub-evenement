@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CatererController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\CoOrganizerController;
+use App\Http\Controllers\DemoInvitationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GalleryController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestbookController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestImportController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PilotageController;
@@ -23,7 +25,11 @@ use App\Http\Controllers\ReminderController;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home')->name('home');
+Route::get('/', HomeController::class)->name('home');
+
+Route::get('demo', DemoInvitationController::class)
+    ->middleware('throttle:20,1')
+    ->name('demo.invitation');
 
 Route::get('i/{token}', [InvitationController::class, 'show'])
     ->where('token', '[A-Za-z0-9]{48}')

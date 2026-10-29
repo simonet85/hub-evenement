@@ -1,9 +1,17 @@
 @extends('layouts.invitation')
 
 @section('title', 'Invitation — '.$event->name.' — Hub Événement')
+@section('eyebrow', $isDemo ? 'Démonstration' : 'Invitation privée')
 
 @section('content')
     <div class="{{ $event->type->accentClass() }}">
+        @if ($isDemo)
+            <div class="mb-4 rounded-sm border border-line bg-surface-300 px-4 py-3 text-caption text-ink-muted" role="status">
+                <span class="font-semibold text-ink">Invitation de démonstration.</span>
+                Les réponses sont enregistrées sur un événement fictif. Aucune donnée réelle n’est utilisée.
+            </div>
+        @endif
+
         <article class="card card-invitation overflow-hidden">
             <div class="h-1 bg-accent" aria-hidden="true"></div>
 
@@ -255,7 +263,11 @@
         </article>
 
         <p class="mt-6 text-center text-caption text-ink-muted">
-            Ce lien est personnel et confidentiel. Merci de ne pas le partager.
+            @if ($isDemo)
+                Cette invitation est une démonstration publique. Les réponses sont fictives.
+            @else
+                Ce lien est personnel et confidentiel. Merci de ne pas le partager.
+            @endif
         </p>
     </div>
 @endsection

@@ -24,9 +24,13 @@ class InvitationController extends Controller
             ->latest()
             ->paginate(10, ['*'], 'livre_dor_page');
 
+        $demoToken = config('hub.demo_invitation_token');
+
         return view('invitations.show', [
             'guest' => $guest,
             'event' => $guest->event,
+            'isDemo' => is_string($demoToken) && $demoToken !== ''
+                && hash_equals($demoToken, (string) $guest->invitation_token),
             'qrCode' => $guest->hasResponded() && $guest->rsvp_status === RsvpStatus::Attending
                 ? $qrCodes->dataUri($guest)
                 : null,
