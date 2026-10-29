@@ -10,8 +10,10 @@ RUN apt-get update \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+COPY .docker/php/php-dev.ini /usr/local/etc/php/conf.d/zz-dev.ini
+
 WORKDIR /var/www/html
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["sh", "-c", "cd /var/www/html/public && exec php -S 0.0.0.0:8000 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php"]
