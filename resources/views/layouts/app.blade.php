@@ -8,12 +8,10 @@
     <meta name="referrer" content="no-referrer">
     <title>@yield('title', config('app.name', 'Hub Événement'))</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="preload" href="{{ asset('fonts/cormorant-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('fonts/dm-sans-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
     @stack('head')
 </head>
 <body class="flex min-h-screen flex-col bg-surface-100 text-ink">
@@ -71,7 +69,5 @@
             <p class="text-caption text-ink-muted">Invitations, RSVP et cagnotte pour vos grands moments.</p>
         </div>
     </footer>
-
-    @livewireScripts
 </body>
 </html>

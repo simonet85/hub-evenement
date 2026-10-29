@@ -8,9 +8,8 @@
     <meta name="referrer" content="no-referrer">
     <title>@yield('title') — Hub Événement</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="preload" href="{{ asset('fonts/cormorant-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('fonts/dm-sans-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
 
     @vite('resources/css/app.css')
 </head>

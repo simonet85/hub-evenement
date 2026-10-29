@@ -1,5 +1,3 @@
-import './bootstrap';
-
 if (document.querySelector('[data-scan]')) {
     import('./scanner.js');
 }
